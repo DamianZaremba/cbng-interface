@@ -1,0 +1,10 @@
+ve/
+*.py[co]
+build/
+dist/
+*.egg
+*.egg-info
+.coverage
+cbng-interface.sublime-workspace
+nosetests.xml
+.eggs

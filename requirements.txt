@@ -1,0 +1,12 @@
+nose
+flake8
+coverage
+Django
+MySQL-python
+django-ajax-selects
+django-bootstrap3-datetimepicker
+django-crispy-forms
+django-redis
+django-reversion
+django-tastypie
+django-debug-toolbar

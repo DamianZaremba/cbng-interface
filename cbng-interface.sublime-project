@@ -1,0 +1,20 @@
+{
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "path": ".",
+            "folder_exclude_patterns": [
+                "build/",
+            ],
+        }
+    ],
+    "settings":
+    {
+        "tab_size": 4,
+        "translate_tabs_to_spaces": true,
+        "use_tab_stops": true,
+        "detect_indentation": false,
+        "indent_to_bracket": true
+    },
+}
