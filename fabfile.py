@@ -71,8 +71,8 @@ def start():
 
 
 def migrate():
-    ve_activate = os.path.join(DEST_DIR, 've', 'bin', 'activate')
-    sudo('. "%(ve)s" && cd %(dir)s && ./manage.py migrate' % {
+    ve_activate = os.path.join(DEST_DIR, 'bin', 've_wrapper')
+    sudo('cd %(dir)s && %(ve)s ./manage.py migrate' % {
         've': ve_activate,
         'dir': DEST_DIR
     })
