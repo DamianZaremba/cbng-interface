@@ -12,6 +12,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ''.join(
     random.choice(string.ascii_uppercase + string.digits) for _ in range(30))
 
+# Security keys
+OAUTH_CONSUMER = None
+OAUTH_SECRET = None
+
 # Debug locally only
 DEBUG = (len(sys.argv) > 1 and sys.argv[1] == 'runserver')
 ALLOWED_HOSTS = []
@@ -24,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cbng_review',
+    'cbng_report',
 ]
 
 # Middleware
@@ -86,28 +92,40 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
+    },
+
+    'enwiki': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'enwiki_p',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
     }
 }
 
 # Load tool settings
 if os.getenv('INSTANCEPROJECT') == 'tools':
-    MYSQL_CFG_FILE = os.path.join(HOME_DIR, 'replica.my.cnf')
-    CBNG_INTERFACE_SECRET_FILE = os.path.join(HOME_DIR, '.secret_key')
-    if os.path.isfile(MYSQL_CFG_FILE):
-        cfg = ConfigParser.RawConfigParser()
-        cfg.read(MYSQL_CFG_FILE)
+    DATABASES['default']['HOST'] = 'tools-db'
 
-        DATABASES['default']['USER'] = cfg.get('client', 'user')
-        DATABASES['default']['PASSWORD'] = cfg.get('client', 'password')
-        DATABASES['default']['HOST'] = 'tools-db'
+CBNG_CFG_FILE = os.path.join(HOME_DIR, '.cbng.cnf')
+if os.path.isfile(CBNG_CFG_FILE):
+    cfg = ConfigParser.RawConfigParser()
+    cfg.read(CBNG_CFG_FILE)
 
-        DATABASES['report']['USER'] = cfg.get('cbng_old_client', 'user')
-        DATABASES['report']['PASSWORD'] = cfg.get(
-            'cbng_old_client', 'password')
-        DATABASES['default']['HOST'] = 'tools-db'
+    DATABASES['default']['USER'] = cfg.get('interface_mysql', 'user')
+    DATABASES['default']['PASSWORD'] = cfg.get('interface_mysql', 'password')
+    DATABASES['default']['NAME'] = cfg.get('interface_mysql', 'name')
+    DATABASES['report']['HOST'] = cfg.get('interface_mysql', 'host')
 
-    if os.path.isfile(CBNG_INTERFACE_SECRET_FILE):
-        SECRET_KEY = 'l=c6@xne#0x#o_ndcyg2r+*io^6ikw@i^io+j0=mdd4ct8+si*'
+    DATABASES['report']['USER'] = cfg.get('report_mysql', 'user')
+    DATABASES['report']['PASSWORD'] = cfg.get('report_mysql', 'password')
+    DATABASES['report']['NAME'] = cfg.get('report_mysql', 'name')
+    DATABASES['report']['HOST'] = cfg.get('report_mysql', 'host')
+
+    SECRET_KEY = cfg.get('general', 'session_secret')
+
+    OAUTH_CONSUMER = cfg.get('oauth', 'consumer')
+    OAUTH_SECRET = cfg.get('oauth', 'secret')
 
 # Localisation
 LANGUAGE_CODE = 'en-gb'

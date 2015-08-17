@@ -10,3 +10,7 @@ django-redis
 django-reversion
 django-tastypie
 django-debug-toolbar
+django-recaptcha
+django-paging
+gunicorn
+requests

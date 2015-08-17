@@ -1,0 +1,18 @@
+[interface_mysql]
+user = root
+name = s52585__interface
+password =
+host = localhost
+
+[report_mysql]
+user = root
+name = s51109__cb
+password =
+host = localhost
+
+[general]
+session_secret = development: )
+
+[oauth]
+consumer=xxxxxx
+secret=xxxxxx
