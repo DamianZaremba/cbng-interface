@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'axes',
     'cbng_review',
     'cbng_report',
+    'cbng_legacy_report',
 ]
 
 # Middleware
@@ -107,7 +108,6 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
     },
-
     'report': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 's51109__cb',
@@ -115,15 +115,10 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
     },
-
-    'enwiki': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'enwiki_p',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-    }
 }
+
+# Database router
+DATABASE_ROUTERS = ['cbng_interface.db_router.AppRouter']
 
 # Load tool settings
 if os.getenv('INSTANCEPROJECT') == 'tools':
