@@ -5,9 +5,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^login/?$', auth_views.login),
-    url(r'^logout/?$', auth_views.login),
-    url(r'^oauth-callback/?$', auth_views.login),
+
+    url('', include('social.apps.django_app.urls', namespace='social'))
 ]
 
 if settings.DEBUG:

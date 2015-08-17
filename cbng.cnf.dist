@@ -11,7 +11,7 @@ password =
 host = localhost
 
 [general]
-session_secret = development :)
+session_secret = development: )
 
 [oauth]
 consumer=xxxxxx

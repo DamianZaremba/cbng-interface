@@ -3,6 +3,7 @@ import os.path
 import sys
 import random
 import string
+import ConfigParser
 
 # Base directories
 HOME_DIR = os.path.abspath(os.path.expanduser('~'))
@@ -11,10 +12,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Random secret - production is loaded from a file
 SECRET_KEY = ''.join(
     random.choice(string.ascii_uppercase + string.digits) for _ in range(30))
-
-# Security keys
-OAUTH_CONSUMER = None
-OAUTH_SECRET = None
 
 # Debug locally only
 DEBUG = (len(sys.argv) > 1 and sys.argv[1] == 'runserver')
@@ -28,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
+    'axes',
     'cbng_review',
     'cbng_report',
 ]
@@ -42,6 +41,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'axes.middleware.FailedLoginMiddleware'
 ]
 
 # Add toolbar in debug mode
@@ -72,6 +72,28 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.template.context_processors.debug',
+    'django.template.context_processors.i18n',
+    'django.template.context_processors.media',
+    'django.template.context_processors.static',
+    'django.template.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect'
+)
+
+# Authentication
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'cbng_interface.auth.MediaWikiOAuth',
+)
+
+LOGIN_URL = '/login/wikimedia'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
 # Wsgi
 WSGI_APPLICATION = 'cbng_interface.wsgi.application'
@@ -124,8 +146,8 @@ if os.path.isfile(CBNG_CFG_FILE):
 
     SECRET_KEY = cfg.get('general', 'session_secret')
 
-    OAUTH_CONSUMER = cfg.get('oauth', 'consumer')
-    OAUTH_SECRET = cfg.get('oauth', 'secret')
+    SOCIAL_AUTH_MEDIAWIKI_KEY = cfg.get('oauth', 'consumer')
+    SOCIAL_AUTH_MEDIAWIKI_SECRET = cfg.get('oauth', 'secret')
 
 # Localisation
 LANGUAGE_CODE = 'en-gb'
