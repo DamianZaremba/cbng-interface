@@ -11,6 +11,6 @@ env:
 before_script:
   - mysql -e 'create database s52585__interface;'
 script:
-  - ./setup.py migrate
+  - ./manage.py migrate
   - ./setup.py flake8
   - ./setup.py nosetests
