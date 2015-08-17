@@ -79,7 +79,12 @@ def migrate():
 
 
 def update_code():
+    ve_activate = os.path.join(DEST_DIR, 'bin', 've_wrapper')
     sudo('cd "%(dir)s" && git pull origin master' % {'dir': DEST_DIR})
+    sudo('cd "%(dir)s" && %(ve)s pip install -r requirements.txt' % {
+         'dir': DEST_DIR
+         've': ve_activate,
+         })
 
 
 def test_api():
