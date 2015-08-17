@@ -16,3 +16,4 @@ gunicorn
 requests
 mwoauth
 django-axes
+python-social-auth
