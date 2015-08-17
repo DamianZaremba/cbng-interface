@@ -27,7 +27,8 @@ class Comments(models.Model):
 
 
 class Reports(models.Model):
-    revertid = models.OneToOneField('Vandalism', db_column='revertid', primary_key=True)
+    revertid = models.OneToOneField(
+        'Vandalism', db_column='revertid', primary_key=True)
     timestamp = models.DateTimeField()
     reporterid = models.IntegerField()
     reporter = models.CharField(max_length=128)

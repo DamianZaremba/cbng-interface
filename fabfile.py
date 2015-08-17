@@ -30,10 +30,17 @@ def check_workingdir_clean():
 
 
 def check_remote_up2date():
-    remote_sha1 = os.system('git ls-remote %s master' % REPO_URL)
-    local_sha1 = os.system('git rev-parse HEAD')
+    p = subprocess.Popen(['git', 'ls-remote', REPO_URL, 'master'],
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    remote_sha1 = p.communicate()[0].split('\t')[0].strip()
 
-    if local_sha1.strip() != remote_sha1.strip():
+    p = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    local_sha1 = p.communicate()[0].strip()
+
+    if local_sha1 != remote_sha1:
         print('There are comitted changes, not pushed to github.')
         print('Refusing to deploy.')
         sys.exit(1)
@@ -69,6 +76,10 @@ def migrate():
         've': ve_activate,
         'dir': DEST_DIR
     })
+
+
+def update_code():
+    sudo('cd "%(dir)s" && git pull origin master' % {'dir': DEST_DIR})
 
 
 def test_api():
