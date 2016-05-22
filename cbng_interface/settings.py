@@ -156,6 +156,12 @@ if os.path.isfile(CBNG_CFG_FILE):
         DATABASES['review']['NAME'] = cfg.get('review_mysql', 'name')
         DATABASES['review']['HOST'] = cfg.get('review_mysql', 'host')
 
+    if cfg.has_section('report_mysql'):
+        DATABASES['report']['USER'] = cfg.get('report_mysql', 'user')
+        DATABASES['report']['PASSWORD'] = cfg.get('report_mysql', 'password')
+        DATABASES['report']['NAME'] = cfg.get('report_mysql', 'name')
+        DATABASES['report']['HOST'] = cfg.get('report_mysql', 'host')
+
     if cfg.has_section('general'):
         SECRET_KEY = cfg.get('general', 'session_secret')
 
