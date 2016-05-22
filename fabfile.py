@@ -7,8 +7,8 @@ from fabric.contrib import files
 
 LOGIN_HOST = 'tools-login.wmflabs.org'
 DEST_TOOL = 'cluebotng'
-TOOL_DIR = '/data/project/%s' % DEST_TOOL
-DEST_DIR = '/apps/cbng_interface' % TOOL_DIR
+TOOL_DIR = os.path.join('/data/project/', DEST_TOOL)
+DEST_DIR = os.path.join(TOOL_DIR, 'apps/cbng_interface')
 REPO_URL = 'https://github.com/DamianZaremba/cbng-interface.git'
 
 # Internal settings
@@ -18,7 +18,7 @@ env.sudo_user = 'tools.%s' % DEST_TOOL
 env.sudo_prefix = "/usr/bin/sudo -ni"
 
 
-def check_workingdir_clean():
+def _check_workingdir_clean():
     p = subprocess.Popen(['git', 'diff', '--exit-code'],
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
@@ -30,7 +30,7 @@ def check_workingdir_clean():
         sys.exit(1)
 
 
-def check_remote_up2date():
+def _check_remote_up2date():
     p = subprocess.Popen(['git', 'ls-remote', REPO_URL, 'master'],
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
@@ -70,7 +70,7 @@ def start():
     sudo('webservice uwsgi-plain start')
 
 
-def migrate():
+def _migrate():
     ve_activate = os.path.join(DEST_DIR, 'bin', 've_wrapper')
     sudo('cd %(dir)s && %(ve)s ./manage.py migrate' % {
         've': ve_activate,
@@ -78,35 +78,31 @@ def migrate():
     })
 
 
-def update_code():
+def _update_code():
     ve_activate = os.path.join(DEST_DIR, 'bin', 've_wrapper')
+    sudo('cd "%(dir)s" && git reset HEAD --hard' % {'dir': DEST_DIR})
+    sudo('cd "%(dir)s" && git clean -fd' % {'dir': DEST_DIR})
     sudo('cd "%(dir)s" && git pull origin master' % {'dir': DEST_DIR})
-    sudo('cd "%(dir)s" && %(ve)s pip install -r requirements.txt' % {
+    sudo('cd "%(dir)s" && %(ve)s pip install -r requirements.txt --upgrade' % {
         'dir': DEST_DIR,
         've': ve_activate,
     })
-    sudo('cd "%(dir)s" && %(ve)s ./manage.py collectstatic' % {
-        'dir': DEST_DIR,
-        've': ve_activate
-    })
-    sudo('rsync %s/uwsgi.ini %s/.uwsgi.ini' % (DEST_DIR, TOOL_DIR))
+    sudo('rsync %s/uwsgi.ini %s/uwsgi.ini' % (DEST_DIR, TOOL_DIR))
 
 
-def test_api():
-    r = requests.get('http://tools.wmflabs.org/cluebotng/api/version')
+def _test_api():
+    r = requests.get('http://tools.wmflabs.org/cluebotng/report/api/v1/')
     if r.status_code != 200:
-        print('Deploy failed - API broken')
+        print('Deploy failed - non 200 returned')
         sys.exit(2)
-
-    if r.text.strip() != os.system('git rev-parse HEAD').strip():
-        print('Deploy failed - version mis-match')
-        sys.exit(3)
 
 
 def deploy():
-    check_workingdir_clean()
-    check_remote_up2date()
+    #_check_workingdir_clean()
+    #_check_remote_up2date()
 
-    update_code()
-    migrate()
-    test_api()
+    stop()
+    _update_code()
+    _migrate()
+    start()
+    _test_api()
