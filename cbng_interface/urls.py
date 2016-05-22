@@ -5,6 +5,7 @@ import django.contrib.auth.views as auth_views
 from django.views.generic import RedirectView
 from .views import (signup, profile)
 import nexus
+from django.conf.urls.static import static
 
 admin.autodiscover()
 
@@ -19,7 +20,7 @@ urlpatterns = [
     url(r'^profile/?$', profile, name='profile'),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^$', RedirectView.as_view(url='/report'))
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
