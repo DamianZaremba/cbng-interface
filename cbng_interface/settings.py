@@ -65,7 +65,7 @@ else:
 
 # Urls
 ROOT_URLCONF = 'cbng_interface.urls'
-STATIC_URL = '/static/'
+STATIC_URL = '/cluebotng/static/'
 
 # Templates
 TEMPLATES = [
@@ -90,9 +90,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_URL = '/login/mediawiki'
+LOGIN_URL = '/cluebotng/login/mediawiki'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/cluebotng/'
 
 # Wsgi
 WSGI_APPLICATION = 'cbng_interface.wsgi.application'

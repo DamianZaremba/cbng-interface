@@ -10,22 +10,22 @@ from django.conf.urls.static import static
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^nexus/', include(nexus.site.urls)),
-    url(r'^report/', include('cbng_report.urls')),
-    url(r'^review/', include('cbng_review.urls')),
-    url(r'^signup$', signup),
-    url(r'^login$', RedirectView.as_view(url='/login/mediawiki')),
-    url(r'^logout$', auth_views.logout, {'next_page': '/'}, name='logout'),
-    url(r'^profile/?$', profile, name='profile'),
-    url('', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^$', RedirectView.as_view(url='/report'))
+    url(r'^cluebotng/admin/', include(admin.site.urls)),
+    url(r'^cluebotng/nexus/', include(nexus.site.urls)),
+    url(r'^cluebotng/report/', include('cbng_report.urls')),
+    url(r'^cluebotng/review/', include('cbng_review.urls')),
+    url(r'^cluebotng/signup$', signup),
+    url(r'^cluebotng/login$', RedirectView.as_view(url='/login/mediawiki')),
+    url(r'^cluebotng/logout$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^cluebotng/profile/?$', profile, name='profile'),
+    url('^cluebotng/', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^cluebotng/$', RedirectView.as_view(url='/cluebotng/report'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns.extend([
-        url(r'^__debug__/', include(debug_toolbar.urls))
+        url(r'^cluebotng/__debug__/', include(debug_toolbar.urls))
     ])
 
 '''
