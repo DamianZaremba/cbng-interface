@@ -1,0 +1,44 @@
+{% extends "cbng_report/base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="container" ng-controller="ReportCtrl">
+    <div class="row">
+        <h1>About False Positives</h1>
+        <p>ClueBot-NG is not a person, it is an automatic robot that tries to detect vandalism and keep Wikipedia clean. A false positive is when an edit that is not vandalism is incorrectly classified as vandalism.</p>
+        <p>The bot is not biased against you, your edit, or your viewpoint (unless your edit is vandalism). False positives are rare, but do occur. By handling false positives well without getting upset, you are helping this bot catch almost half of all vandalism on Wikipedia and keep the wiki clean for all of us.</p>
+    </div>
+
+    <div class="row">
+        <h1>Report a false positive</h1>
+        <p>First, you need to retrieve ClueBot NG's revert ID. This can be done in 2 ways as described below:</p>
+
+        <h3>From the article</h3>
+        <p><img src="//upload.wikimedia.org/wikipedia/commons/thumb/a/a3/CBFPHowto1.png/400px-CBFPHowto1.png" /></p>
+        <p>Click the history tab at the top of the article.</p>
+        <hr />
+
+        <p><img src="//upload.wikimedia.org/wikipedia/commons/thumb/4/4d/CBFPHowto2.png/600px-CBFPHowto2.png" /></p>
+        <p>The revert ID is in parenthesis right after "Thanks, User:ClueBot".</p>
+
+        <h3>From your talk page</h3>
+        <p><img src="//upload.wikimedia.org/wikipedia/commons/thumb/7/72/CBFPHowto3.png/400px-CBFPHowto3.png" /></p>
+        <p>Click the "edit this page" tab at the top of the page.</p>
+        <hr />
+
+        <p><img src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0f/CBFPHowto4.png/600px-CBFPHowto4.png" /></p>
+        <p>The revert ID is in the text right after "MySQL ID:".</p>
+
+        <h1>Submit a report</h1>
+        <p>
+            <form action="/report/" method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% endbuttons %}
+            </form>
+        </p>
+    </div>
+</div>
+{% endblock %}

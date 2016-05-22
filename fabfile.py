@@ -7,7 +7,8 @@ from fabric.contrib import files
 
 LOGIN_HOST = 'tools-login.wmflabs.org'
 DEST_TOOL = 'cluebotng'
-DEST_DIR = '/data/project/%s/apps/cbng_interface' % DEST_TOOL
+TOOL_DIR = '/data/project/%s' % DEST_TOOL
+DEST_DIR = '/apps/cbng_interface' % TOOL_DIR
 REPO_URL = 'https://github.com/DamianZaremba/cbng-interface.git'
 
 # Internal settings
@@ -33,7 +34,7 @@ def check_remote_up2date():
     p = subprocess.Popen(['git', 'ls-remote', REPO_URL, 'master'],
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
-    remote_sha1 = p.communicate()[0].split('\t')[0].strip()
+    remote_sha1 = p.communicate()[0].split(b'\t')[0].strip()
 
     p = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
                          stdout=subprocess.PIPE,
@@ -62,12 +63,11 @@ def setup():
 
 
 def stop():
-    sudo('jstop webgrid-generic')
+    sudo('webservice uwsgi-plain stop')
 
 
 def start():
-    sudo('jstart -q webgrid-generic %s' %
-         os.path.join(DEST_DIR, 'bin', 'tools_run'))
+    sudo('webservice uwsgi-plain start')
 
 
 def migrate():
@@ -85,6 +85,11 @@ def update_code():
         'dir': DEST_DIR,
         've': ve_activate,
     })
+    sudo('cd "%(dir)s" && %(ve)s ./manage.py collectstatic' % {
+        'dir': DEST_DIR,
+        've': ve_activate
+    })
+    sudo('rsync %s/uwsgi.ini %s/.uwsgi.ini' % (DEST_DIR, TOOL_DIR))
 
 
 def test_api():

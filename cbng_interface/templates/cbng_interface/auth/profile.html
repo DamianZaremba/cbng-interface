@@ -1,0 +1,77 @@
+{% extends "cbng_interface/base.html" %}
+
+{% block title %}ClueBot NG - Profile{% endblock %}
+{% block appname %}Profile{% endblock %}
+
+{% block content %}
+<div class="container" ng-controller="ProfileCtrl">
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>User Profile</h3>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" readonly value="{{ user.username }}">
+                </div>
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" class="form-control" id="first_name" readonly value="{{ user.first_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" readonly value="{{ user.last_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" readonly value="{{ user.email }}">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h3>Permissions</h3>
+                <div class="form-group">
+                    <label for="is_staff">Staff</label>
+                    <input type="checkbox" class="form-control" disabled="disabled" id="is_staff" {% if user.is_staff %}checked{% endif %}>
+                </div>
+                <div class="form-group">
+                    <label for="is_superuser">Admin</label>
+                    <input type="checkbox" class="form-control" disabled="disabled" id="is_superuser" {% if user.is_superuser %}checked{% endif %}>
+                </div>
+
+                <h3>Groups</h3>
+                <div class="form-group">
+                    <ul>
+                    {% for group in user.groups.all %}
+                    <li>{{ group }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>API Access</h3>
+                <p><a ng-click="show_api_details = !show_api_details">Hide / Show</a></p>
+                <div class="form-group" ng-modal="api-key" ng-show="show_api_details">
+                    <label for="api_key">API Key (secret)</label>
+                    <input type="text" class="form-control" id="api_key" value="{{ api_key }}">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h3>Meta</h3>
+                <div class="form-group">
+                    <label for="last_login">Last Login</label>
+                    <input type="text" class="form-control" id="last_login" readonly value="{{ user.last_login }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="first_seen">First Seen</label>
+                    <input type="text" class="form-control" id="first_seen" readonly value="{{ user.date_joined }}">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

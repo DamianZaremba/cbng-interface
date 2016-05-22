@@ -5,6 +5,8 @@ dist/
 *.egg
 *.egg-info
 .coverage
-cbng-interface.sublime-workspace
+*.sublime-*
 nosetests.xml
 .eggs
+.idea
+*.iml

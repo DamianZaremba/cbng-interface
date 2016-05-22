@@ -1,0 +1,20 @@
+{% extends "cbng_interface/base.html" %}
+
+{% block title %}ClueBot NG - Signup{% endblock %}
+{% block appname %}ClueBot NG - Tools{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1>Signup</h1>
+        <p>We use OAuth with Wikimedia.org to authenticate users.</p>
+        <p>In order to login please <a href="https://meta.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Main+Page&type=signup">Signup with Wikimedia</a>, this will also grant you access to project sites such as <a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a>.</p>
+        <p>You can learn more about OAuth @ <a href="https://www.mediawiki.org/wiki/Help:OAuth">https://www.mediawiki.org/wiki/Help:OAuth</a></p>
+    </div>
+
+    <div class="row">
+        <h1>Anonymous users</h1>
+        <p>We understand that not all users want to create accounts. To enable this, basic actions, such as <a href="/report">reporting a false positive</a> will be allowed without login. More advanced features require an account, to ensure traceability.</p>
+    </div>
+</div>
+{% endblock %}

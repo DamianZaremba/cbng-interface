@@ -1,0 +1,40 @@
+{% extends "cbng_report/base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="container" ng-controller="ReportCtrl">
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Reporter</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td><a href="/report/{{ report.revertid.id }}">{{ report.revertid.id }}</a></td>
+                    <td>{{ report.reporter }}</td>
+                    <td>{{ report.get_status_display }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        {% if reports.has_previous %}
+        <p>
+            <a href="?page={{ reports.previous_page_number }}">Previous Page</a>
+        </p>
+        {% endif %}
+        {% if reports.has_next %}
+        <p class="pull-right">
+            <a href="?page={{ reports.next_page_number }}">Next Page</a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

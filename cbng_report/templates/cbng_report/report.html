@@ -1,0 +1,80 @@
+{% extends "cbng_report/base.html" %}
+{% load bootstrap3 %}
+
+{% block app_pre_custom %}
+<link href="/static/css/diff.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div class="container" ng-controller="ReportCtrl">
+    <div class="row">
+        <h1>Revert {{ vandalism.id }}</h1>
+    </div>
+    <div class="row">
+        <p><b>User</b>: {{ vandalism.user }}</p>
+        <p><b>Article</b>: {{ vandalism.article }}</p>
+        <p><b>Diff</b>:</p>
+        {% if vandalism.diff %}
+        <div class="change-diff">{{ vandalism.diff | safe }}</div>
+        {% else %}
+        <p>Could not load diff, this may be due to a tempoary error or the article may have been deleted</p>
+        {% endif %}
+        <p><b>Reason</b>: {{ vandalism.reason }}</p>
+        <p><b>Timestamp</b>: {{ vandalism.timestamp }}</p>
+    </div>
+{% if report %}
+    <div class="row">
+        <h2>Reporter Information</h2>
+        <p><b>Reporter</b>: {{ report.reporter }}</p>
+        <p><b>Date</b>: {{ report.timestamp }}</p>
+        <p class="status-changer"><b>Status</b>: <span id="status">{{ report.get_status_display }}</span>
+{% if user.is_authenticated and perms.cbng_report.can_review %}
+            ({% for status in report.STATUSES %}
+                <a ng-click="change_status({{ vandalism.id }}, {{ status|first }})">{{ status|last }}</a>
+                {% if status|first != report.STATUSES|last|first %}|{% endif %}
+            {% endfor %})
+{% endif %}
+        </p>
+    </div>
+    <hr />
+    <div class="row">
+        <h2>Comments</h2>
+        {% if comments %}
+            {% for comment in comments %}
+            <div class="row comment" id="comment-{{ comment.commentid }}">
+                <p>
+                    <a href="#comment-{{ comment.commentid }}">#{{ comment.commentid }}</a>
+                    {{ comment.timestamp }}
+                    {% if user.is_authenticated and perms.cbng_report.can_review_comment %}
+                        <a ng-click="delete_comment({{ comment.commentid }})"> (X)</a>
+                    {% endif %}
+                </p>
+                <b>{{ comment.user }}</b>
+                <p>{{ comment.comment }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+        <p>No comments available</p>
+        {% endif %}
+{% else %}
+    <div class="row">
+        <p><b>This revert has not been reported as a false positive</b></p>
+    </div>
+{% endif %}
+
+{% if user.is_authenticated and perms.cbng_report.can_comment %}
+    <div class="row">
+        <h1>Add a comment</h1>
+        <p>
+            <form action="/report/{{ report.id }}/" method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% endbuttons %}
+            </form>
+        </p>
+    </div>
+{% endif %}
+</div>
+{% endblock %}

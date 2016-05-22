@@ -1,12 +1,30 @@
 class AppRouter(object):
 
     def db_for_read(self, model, **hints):
-        if model._meta.app_label == 'cbng_legacy_report':
+        '''
+        Route the cbng_review app to the review database
+        and the cbng_report app to the bot database
+        :param model:
+        :param hints:
+        :return:
+        '''
+        if model._meta.app_label == 'cbng_review':
+            return 'review'
+        if model._meta.app_label == 'cbng_report':
             return 'report'
         return None
 
     def db_for_write(self, model, **hints):
-        if model._meta.app_label == 'cbng_legacy_report':
+        '''
+        Route the cbng_review app to the review database
+        and the cbng_report app to the bot database
+        :param model:
+        :param hints:
+        :return:
+        '''
+        if model._meta.app_label == 'cbng_review':
+            return 'review'
+        if model._meta.app_label == 'cbng_report':
             return 'report'
         return None
 
@@ -14,6 +32,13 @@ class AppRouter(object):
         return None
 
     def allow_syncdb(self, db, model):
-        if model._meta.app_label == 'cbng_legacy_report':
+        '''
+        Prevent the migration of the cbng_report database
+
+        :param db:
+        :param model:
+        :return:
+        '''
+        if model._meta.app_label == 'cbng_report':
             return False
         return None

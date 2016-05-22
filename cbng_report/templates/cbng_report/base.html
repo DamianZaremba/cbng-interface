@@ -1,0 +1,15 @@
+{% extends "cbng_interface/base.html" %}
+
+{% block title %}ClueBot NG - Report{% endblock %}
+{% block appname %}Report{% endblock %}
+
+{% block appmenu %}
+<ul class="nav navbar-nav">
+    <li class="{% if request.get_full_path == "/report/" %}active{% endif %}">
+        <a href="/report">Home</a>
+    </li>
+    <li class="{% if request.get_full_path == "/report/list/" %}active{% endif %}">
+        <a href="/report/list">List</a>
+    </li>
+</ul>
+{% endblock appmenu %}

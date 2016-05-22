@@ -9,6 +9,7 @@ django-crispy-forms
 django-redis
 django-reversion
 django-tastypie
+django-tastypie-swagger
 django-debug-toolbar
 django-recaptcha
 django-paging
@@ -17,3 +18,7 @@ requests
 mwoauth
 django-axes
 python-social-auth
+ConfigParser
+django-bootstrap3
+gargoyle-yplan
+nexus-yplan
