@@ -94,19 +94,22 @@
     <div class="row">{% bootstrap_messages %}</div>
 </div>
 {% block content %}{% endblock %}
-{% block app_post_custom %}{% endblock %}
+{% if is_staging_site %}
+<div id="footer-note">
+    <p>This is the staging site for ClueBot NG's tools. Any changes made here are NOT live.</p>
+</div>
+{% endif %}
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-ui-bootstrap/1.0.3/ui-bootstrap.min.js"></script>
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.js"></script>
 <script src="/static/js/app.js"></script>
-<script src="/static/js/controllers/profile.js"></script>
-<script src="/static/js/controllers/report.js"></script>
 <script type="text/javascript">angular.module('cbngApp').constant('devMode', {% angular_debug %});</script>
 {% if not debug %}
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/raven.js/3.0.4/raven.min.js"></script>
 <script type="text/javascript">Raven.config('https://245aa2bc5b434747bb3089f6c7fca780@app.getsentry.com/79344').install();</script>
 {% endif %}
+{% block app_post_custom %}{% endblock %}
 </body>
 </html>

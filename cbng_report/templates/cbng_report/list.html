@@ -15,8 +15,12 @@
             <tbody>
             {% for report in reports %}
                 <tr>
-                    <td><a href="/report/{{ report.revertid.id }}">{{ report.revertid.id }}</a></td>
-                    <td>{{ report.reporter }}</td>
+                    <td><a href="/report/{{ report.vandalism_id }}">{{ report.vandalism_id }}</a></td>
+                    {% if report.user.firstname %}
+                    <td>{{ report.user.firstname }}</td>
+                    {% else %}
+                    <td>Anonymous</td>
+                    {% endif %}
                     <td>{{ report.get_status_display }}</td>
                 </tr>
             {% endfor %}

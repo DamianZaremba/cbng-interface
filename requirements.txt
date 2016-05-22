@@ -13,9 +13,7 @@ django-tastypie-swagger
 django-debug-toolbar
 django-recaptcha
 django-paging
-gunicorn
 requests
-mwoauth
 django-axes
 python-social-auth
 ConfigParser

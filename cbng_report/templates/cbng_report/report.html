@@ -25,7 +25,13 @@
 {% if report %}
     <div class="row">
         <h2>Reporter Information</h2>
-        <p><b>Reporter</b>: {{ report.reporter }}</p>
+        <p><b>Reporter</b>: {% spaceless %}
+            {% if report.reporter.firstname %}
+                {{ report.reporter.firstname }}
+            {% else %}
+                Anonymous
+            {% endif %}
+        {% endspaceless %}</p>
         <p><b>Date</b>: {{ report.timestamp }}</p>
         <p class="status-changer"><b>Status</b>: <span id="status">{{ report.get_status_display }}</span>
 {% if user.is_authenticated and perms.cbng_report.can_review %}
@@ -49,7 +55,11 @@
                         <a ng-click="delete_comment({{ comment.commentid }})"> (X)</a>
                     {% endif %}
                 </p>
-                <b>{{ comment.user }}</b>
+                {% if comment.user.firstname %}
+                <b>{{ comment.user.firstname }}</b>
+                {% else %}
+                <b>Anonymous</b>
+                {% endif %}
                 <p>{{ comment.comment }}</p>
             </div>
             {% endfor %}

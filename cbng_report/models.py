@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 import requests
 import logging
+from django.contrib.auth.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -19,13 +20,16 @@ class Beaten(models.Model):
 
 class Comments(models.Model):
     commentid = models.AutoField(primary_key=True)
-    revertid = models.OneToOneField('Vandalism',
+    vandalism = models.OneToOneField('Vandalism',
                                     db_column='revertid',
                                     primary_key=True)
     timestamp = models.DateTimeField()
-    userid = models.IntegerField()
-    user = models.CharField(max_length=128)
+    user = models.ForeignKey(User, db_column='userid', null=True, blank=True)
     comment = models.TextField()
+
+    @property
+    def id(self):
+        return self.commentid
 
     class Meta:
         managed = False
@@ -44,12 +48,11 @@ class Reports(models.Model):
         (3, 'Bug'),
         (4, 'Resolved'),
     )
-    revertid = models.OneToOneField('Vandalism',
+    vandalism = models.OneToOneField('Vandalism',
                                     db_column='revertid',
                                     primary_key=True)
     timestamp = models.DateTimeField()
-    reporterid = models.IntegerField()
-    reporter = models.CharField(max_length=128)
+    user = models.ForeignKey(User, db_column='reporterid', null=True, blank=True)
     status = models.IntegerField(choices=STATUSES)
 
     class Meta:
@@ -62,6 +65,9 @@ class Reports(models.Model):
 
 
 class Users(models.Model):
+    '''
+    Deprecated - used for mapping account privileges ONLY
+    '''
     userid = models.AutoField(primary_key=True)
     username = models.CharField(unique=True, max_length=128)
     password = models.CharField(max_length=128)

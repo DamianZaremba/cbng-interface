@@ -3,6 +3,10 @@
 {% block title %}ClueBot NG - Profile{% endblock %}
 {% block appname %}Profile{% endblock %}
 
+{% block app_post_custom %}
+<script src="/static/js/controllers/profile.js"></script>
+{% endblock %}
+
 {% block content %}
 <div class="container" ng-controller="ProfileCtrl">
     <form>

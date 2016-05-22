@@ -14,3 +14,13 @@ div.comment {
   padding: 5px;
   margin-bottom: 5px;
 }
+
+div#footer-note {
+  background-color: #ffdd00;
+  color: #000000;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 10px;
+  text-align: center;
+}

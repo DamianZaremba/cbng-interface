@@ -11,7 +11,7 @@ class AppRouter(object):
         if model._meta.app_label == 'cbng_review':
             return 'review'
         if model._meta.app_label == 'cbng_report':
-            return 'report'
+            return 'bot'
         return None
 
     def db_for_write(self, model, **hints):
@@ -25,7 +25,7 @@ class AppRouter(object):
         if model._meta.app_label == 'cbng_review':
             return 'review'
         if model._meta.app_label == 'cbng_report':
-            return 'report'
+            return 'bot'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -33,7 +33,7 @@ class AppRouter(object):
 
     def allow_syncdb(self, db, model):
         '''
-        Prevent the migration of the cbng_report database
+        Prevent the migration of the bot database
 
         :param db:
         :param model:

@@ -31,9 +31,9 @@ def home(request):
                                          'Edit with revert ID %d was NOT reverted!' % id)
                 else:
                     try:
-                        r = Reports.objects.get(revertid=v)
+                        r = Reports.objects.get(vandalism=v)
                     except Reports.DoesNotExist:
-                        r = Reports(revertid=v,
+                        r = Reports(vandalism=v,
                                     timestamp=datetime.now,
                                     status=0)
                         if request.user.is_authenticated():
@@ -46,7 +46,7 @@ def home(request):
 
                     if comment:
                         c = Comments()
-                        c.revertid = v
+                        c.vandalism = v
                         c.timestamp = datetime.now
                         if request.user.is_authenticated():
                             c.userid = request.user.id
@@ -80,14 +80,14 @@ def report(request, id):
 
     vandalism = get_object_or_404(Vandalism, id=id)
     try:
-        report = Reports.objects.get(revertid=vandalism)
+        report = Reports.objects.get(vandalism=vandalism)
     except Reports.DoesNotExist:
         report = None
 
     if request.method == 'POST' and request.user.has_perm('cbng_report.can_comment'):
         if form.is_valid():
             c = Comments()
-            c.revertid = vandalism
+            c.vandalism = vandalism
             c.timestamp = datetime.now
             c.userid = request.user.id
             c.comment = form.cleaned_data['comment']
@@ -97,7 +97,7 @@ def report(request, id):
     return render(request, 'cbng_report/report.html', {
         'vandalism': vandalism,
         'report': report,
-        'comments': Comments.objects.filter(revertid=vandalism).order_by('-timestamp'),
+        'comments': Comments.objects.filter(vandalism=vandalism).order_by('-timestamp'),
     })
 
 
@@ -113,7 +113,7 @@ def report_status_change(request, revert_id, status_id):
     :return:
     '''
     try:
-        r = Reports.objects.get(revertid=Vandalism.objects.get(id=revert_id))
+        r = Reports.objects.get(vandalism=Vandalism.objects.get(id=revert_id))
         r.status = status_id
         r.save()
     except Exception as e:

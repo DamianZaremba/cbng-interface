@@ -75,10 +75,10 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cbng_interface.context_processors.staging_site',
             ]
         },
     },
@@ -106,9 +106,9 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
     },
-    'report': {
+    'bot': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 's51109__cb',
+        'NAME': 's52585__cb',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -138,6 +138,9 @@ RAVEN_CONFIG = {
     'release': raven.fetch_git_sha(BASE_DIR)
 }
 
+# Slightly dodgy hack
+STAGING_SITE = (os.environ.get('USER', '') == 'tools.cluebotng')
+
 # Load config file
 CBNG_CFG_FILE = os.path.join(HOME_DIR, '.cbng.cnf')
 if os.path.isfile(CBNG_CFG_FILE):
@@ -156,11 +159,11 @@ if os.path.isfile(CBNG_CFG_FILE):
         DATABASES['review']['NAME'] = cfg.get('review_mysql', 'name')
         DATABASES['review']['HOST'] = cfg.get('review_mysql', 'host')
 
-    if cfg.has_section('report_mysql'):
-        DATABASES['report']['USER'] = cfg.get('report_mysql', 'user')
-        DATABASES['report']['PASSWORD'] = cfg.get('report_mysql', 'password')
-        DATABASES['report']['NAME'] = cfg.get('report_mysql', 'name')
-        DATABASES['report']['HOST'] = cfg.get('report_mysql', 'host')
+    if cfg.has_section('bot_mysql'):
+        DATABASES['bot']['USER'] = cfg.get('bot_mysql', 'user')
+        DATABASES['bot']['PASSWORD'] = cfg.get('bot_mysql', 'password')
+        DATABASES['bot']['NAME'] = cfg.get('bot_mysql', 'name')
+        DATABASES['bot']['HOST'] = cfg.get('bot_mysql', 'host')
 
     if cfg.has_section('general'):
         SECRET_KEY = cfg.get('general', 'session_secret')
@@ -171,3 +174,10 @@ if os.path.isfile(CBNG_CFG_FILE):
     if cfg.has_section('oauth'):
         SOCIAL_AUTH_MEDIAWIKI_KEY = cfg.get('oauth', 'consumer')
         SOCIAL_AUTH_MEDIAWIKI_SECRET = cfg.get('oauth', 'secret')
+
+# Social auth db hacks
+SOCIAL_AUTH_UID_LENGTH = 190
+SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 190
+SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 190
+SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 190
+SOCIAL_AUTH_EMAIL_LENGTH = 190
