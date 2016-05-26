@@ -16,11 +16,11 @@ urlpatterns = [
     url(r'^cluebotng/report/', include('cbng_report.urls')),
     url(r'^cluebotng/review/', include('cbng_review.urls')),
     url(r'^cluebotng/signup$', signup),
-    url(r'^cluebotng/login$', RedirectView.as_view(url='/login/mediawiki')),
-    url(r'^cluebotng/logout$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^cluebotng/login$', RedirectView.as_view(url='/cluebotng/login/mediawiki')),
+    url(r'^cluebotng/logout$', auth_views.logout, {'next_page': '/cluebotng/'}, name='logout'),
     url(r'^cluebotng/profile/?$', profile, name='profile'),
     url(r'^cluebotng/', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^cluebotng$', RedirectView.as_view(url='/report'))
+    url(r'^cluebotng$', RedirectView.as_view(url='/cluebotng/report'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
