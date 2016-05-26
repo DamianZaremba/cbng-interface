@@ -3,9 +3,9 @@ from django.contrib import admin
 from django.conf import settings
 import django.contrib.auth.views as auth_views
 from django.views.generic import RedirectView
+from django.views.static import serve
 from .views import (signup, profile)
 import nexus
-from django.conf.urls.static import static
 
 admin.autodiscover()
 nexus.autodiscover()
@@ -20,8 +20,9 @@ urlpatterns = [
     url(r'^cluebotng/logout/?$', auth_views.logout, {'next_page': '/cluebotng/'}, name='logout'),
     url(r'^cluebotng/profile/?$', profile, name='profile'),
     url(r'^cluebotng/', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^cluebotng/?$', RedirectView.as_view(url='/cluebotng/report/'))
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    url(r'^cluebotng/?$', RedirectView.as_view(url='/cluebotng/report/')),
+    url(r'^cluebotng/static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+]
 
 if settings.DEBUG:
     import debug_toolbar
