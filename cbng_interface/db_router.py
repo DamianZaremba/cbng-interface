@@ -8,7 +8,6 @@ class AppRouter(object):
         :param hints:
         :return:
         '''
-        print(model._meta.app_label)
         if model._meta.app_label == 'cbng_review':
             return 'review'
         if model._meta.app_label == 'cbng_report':
