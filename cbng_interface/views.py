@@ -34,6 +34,5 @@ def profile(request):
         data['api_key'] = ApiKey.objects.get(user=request.user).key
     except ApiKey.DoesNotExist:
         logger.warn('User %s does not have an API key', request.user)
-        pass
 
     return render(request, 'cbng_interface/auth/profile.html', data)

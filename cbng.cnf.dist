@@ -4,15 +4,24 @@ name = s52585__interface
 password =
 host = localhost
 
-[report_mysql]
+[bot_mysql]
 user = root
-name = s51109__cb
+name = s52585__cb
+password =
+host = localhost
+
+[review_mysql]
+user = root
+name = s52585__review
 password =
 host = localhost
 
 [general]
-session_secret = development: )
+session_secret = development......
 
 [oauth]
-consumer=xxxxxx
-secret=xxxxxx
+consumer = xxxx
+secret = xxxx
+
+[raven]
+dsn = xxxx
