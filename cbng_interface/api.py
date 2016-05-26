@@ -13,8 +13,6 @@ class BaseModelResource(resources.ModelResource):
     class BaseMeta:
 
         def __init__(self, *args, **kwargs):
-            super(BaseMeta, self).__init__(*args, **kwargs)
-
             if not self.resource_name:
                 self.resource_name = self.__class__.__name__ \
                     .replace('Resource', '').lower()

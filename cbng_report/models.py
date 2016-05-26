@@ -21,8 +21,8 @@ class Beaten(models.Model):
 class Comments(models.Model):
     commentid = models.AutoField(primary_key=True)
     vandalism = models.OneToOneField('Vandalism',
-                                    db_column='revertid',
-                                    primary_key=True)
+                                     db_column='revertid',
+                                     primary_key=True)
     timestamp = models.DateTimeField()
     user = models.ForeignKey(User, db_column='userid', null=True, blank=True)
     comment = models.TextField()
@@ -49,8 +49,8 @@ class Reports(models.Model):
         (4, 'Resolved'),
     )
     vandalism = models.OneToOneField('Vandalism',
-                                    db_column='revertid',
-                                    primary_key=True)
+                                     db_column='revertid',
+                                     primary_key=True)
     timestamp = models.DateTimeField()
     user = models.ForeignKey(User, db_column='reporterid', null=True, blank=True)
     status = models.IntegerField(choices=STATUSES)

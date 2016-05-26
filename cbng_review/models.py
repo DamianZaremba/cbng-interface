@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 logger = logging.getLogger(__name__)
 
+
 class ClientClassification(models.Model):
     CLASSIFICATIONS = (
         (0, 'Vandalism'),

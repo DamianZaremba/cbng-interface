@@ -3,7 +3,6 @@ from datetime import datetime
 
 from cbng_report.forms import ReportForm, CommentForm
 from cbng_report.models import Vandalism, Reports, Comments
-import requests
 import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
