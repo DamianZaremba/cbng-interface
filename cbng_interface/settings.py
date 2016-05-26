@@ -65,6 +65,7 @@ else:
 
 # Urls
 ROOT_URLCONF = 'cbng_interface.urls'
+STATIC_ROOT = os.path.join(BASE_DIR, 'cbng_interface', 'static')
 STATIC_URL = '/cluebotng/static/'
 NEXUS_MEDIA_PREFIX = '/cluebotng/nexus/media/'
 

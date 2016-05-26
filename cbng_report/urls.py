@@ -15,9 +15,9 @@ v1_api.register(VandalismResource())
 
 urlpatterns = [
     url(r'^$', views.home),
-    url(r'^list$', views.list),
-    url(r'^(?P<id>\d+)$', views.report),
-    url(r'^(?P<revert_id>\d+)/status/(?P<status_id>\d)$',
+    url(r'^list/?$', views.list),
+    url(r'^(?P<id>\d+)/?$', views.report),
+    url(r'^(?P<revert_id>\d+)/status/(?P<status_id>\d)/?$',
         views.report_status_change),
     url(r'^api/', include(v1_api.urls)),
 ]

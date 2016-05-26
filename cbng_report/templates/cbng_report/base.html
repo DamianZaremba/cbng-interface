@@ -9,11 +9,11 @@
 
 {% block appmenu %}
 <ul class="nav navbar-nav">
-    <li class="{% if request.get_full_path == "/cluebotng/report" %}active{% endif %}">
-        <a href="/cluebotng/report">Home</a>
+    <li class="{% if request.get_full_path == "/cluebotng/report/" %}active{% endif %}">
+        <a href="/cluebotng/report/">Home</a>
     </li>
-    <li class="{% if request.get_full_path == "/cluebotng/report/list" %}active{% endif %}">
-        <a href="/cluebotng/report/list">List</a>
+    <li class="{% if request.get_full_path == "/cluebotng/report/list/" %}active{% endif %}">
+        <a href="/cluebotng/report/list/">List</a>
     </li>
 </ul>
 {% endblock appmenu %}
