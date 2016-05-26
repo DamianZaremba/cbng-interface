@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^cluebotng/profile/?$', profile, name='profile'),
     url(r'^cluebotng/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^cluebotng/?$', RedirectView.as_view(url='/cluebotng/report/'))
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
