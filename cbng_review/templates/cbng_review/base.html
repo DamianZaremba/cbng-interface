@@ -4,25 +4,25 @@
 {% block appname %}Review{% endblock %}
 
 {% block app_post_custom %}
-<script src="/static/js/controllers/review.js"></script>
+<script src="/cluebotng/static/js/controllers/review.js"></script>
 {% endblock %}
 
 {% block appmenu %}
 <ul class="nav navbar-nav">
-    <li class="{% if request.get_full_path == "/review/" %}active{% endif %}">
-        <a href="/review/">About</a>
+    <li class="{% if request.get_full_path == "/cluebotng/review/" %}active{% endif %}">
+        <a href="/cluebotng/review/">About</a>
     </li>
-    <li class="{% if request.get_full_path == "/review/stats/" %}active{% endif %}">
-        <a href="/review/stats/">Stats</a>
+    <li class="{% if request.get_full_path == "/cluebotng/review/stats/" %}active{% endif %}">
+        <a href="/cluebotng/review/stats/">Stats</a>
     </li>
     {% if user.is_authenticated and perms.cbng_review.can_review %}
-    <li class="{% if request.get_full_path == "/review/reviewer/" %}active{% endif %}">
-        <a href="/review/reviewer/">Reviewer</a>
+    <li class="{% if request.get_full_path == "/cluebotng/review/reviewer/" %}active{% endif %}">
+        <a href="/cluebotng/review/reviewer/">Reviewer</a>
     </li>
     {% endif %}
     {% if user.is_authenticated and perms.cbng_review.can_review_admin %}
-    <li class="{% if request.get_full_path == "/review/admin/" %}active{% endif %}">
-        <a href="/review/admin/">Admin</a>
+    <li class="{% if request.get_full_path == "/cluebotng/review/admin/" %}active{% endif %}">
+        <a href="/cluebotng/review/admin/">Admin</a>
     </li>
     {% endif %}
 </ul>

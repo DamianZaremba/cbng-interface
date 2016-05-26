@@ -6,7 +6,7 @@ Development
 
 ```bash
 virtualenv ve
-. ve/bin/active
+. ve/bin/activate
 pip install -r requirements.txt
 ```
 

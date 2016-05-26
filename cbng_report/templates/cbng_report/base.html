@@ -4,16 +4,16 @@
 {% block appname %}Report{% endblock %}
 
 {% block app_post_custom %}
-<script src="/static/js/controllers/report.js"></script>
+<script src="/cluebotng/static/js/controllers/report.js"></script>
 {% endblock %}
 
 {% block appmenu %}
 <ul class="nav navbar-nav">
-    <li class="{% if request.get_full_path == "/report/" %}active{% endif %}">
-        <a href="/report">Home</a>
+    <li class="{% if request.get_full_path == "/cluebotng/report/" %}active{% endif %}">
+        <a href="/cluebotng/report">Home</a>
     </li>
-    <li class="{% if request.get_full_path == "/report/list/" %}active{% endif %}">
-        <a href="/report/list">List</a>
+    <li class="{% if request.get_full_path == "/cluebotng/report/list/" %}active{% endif %}">
+        <a href="/cluebotng/report/list">List</a>
     </li>
 </ul>
 {% endblock appmenu %}
