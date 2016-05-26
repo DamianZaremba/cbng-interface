@@ -2,7 +2,7 @@
 {% load bootstrap3 %}
 
 {% block app_pre_custom %}
-<link href="/static/css/diff.css" rel="stylesheet" type="text/css">
+<link href="/cluebotng/static/css/diff.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -76,7 +76,7 @@
     <div class="row">
         <h1>Add a comment</h1>
         <p>
-            <form action="/report/{{ report.id }}/" method="post" class="form">
+            <form action="/cluebotng/report/{{ report.id }}/" method="post" class="form">
                 {% csrf_token %}
                 {% bootstrap_form form %}
                 {% buttons %}

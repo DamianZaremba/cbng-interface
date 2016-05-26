@@ -15,7 +15,7 @@
             <tbody>
             {% for report in reports %}
                 <tr>
-                    <td><a href="/report/{{ report.vandalism_id }}">{{ report.vandalism_id }}</a></td>
+                    <td><a href="/cluebotng/report/{{ report.vandalism_id }}">{{ report.vandalism_id }}</a></td>
                     {% if report.user.firstname %}
                     <td>{{ report.user.firstname }}</td>
                     {% else %}
