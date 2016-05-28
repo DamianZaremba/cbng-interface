@@ -7,7 +7,10 @@ from tastypie.models import ApiKey
 logger = logging.getLogger(__name__)
 
 def create_api_token(sender, user, request, **kwargs):
-    ApiKey.objects.create(user=user)
+    try:
+        ApiKey.objects.get(user=user)
+    except ApiKey.DoesNotExist:
+        ApiKey.objects.create(user=user)
 
 def map_user_rights(sender, user, request, **kwargs):
     try:
