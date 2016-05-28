@@ -114,3 +114,12 @@ class Vandalism(models.Model):
     class Meta:
         managed = False
         db_table = 'vandalism'
+
+
+class ClusterNode(models.Model):
+    type = models.CharField(max_length=256)
+    node = models.CharField(max_length=256)
+
+    class Meta:
+        managed = False
+        db_table = 'cluster_node'

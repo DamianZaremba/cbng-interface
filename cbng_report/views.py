@@ -4,6 +4,8 @@ from datetime import datetime
 from cbng_report.forms import ReportForm, CommentForm
 from cbng_report.models import Vandalism, Reports, Comments
 import logging
+
+from cbng_report.utils import send_msg_to_relay, get_next_report
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -35,12 +37,14 @@ def home(request):
                         r = Reports(vandalism=v,
                                     timestamp=datetime.now,
                                     status=0)
+
                         if request.user.is_authenticated():
                             r.reporterid = request.user.id
                             r.reporter = request.user.username
                         else:
                             r.reporterid = -1
                             r.reporter = 'Anonymous'
+
                         r.save()
 
                     if comment:
@@ -54,13 +58,20 @@ def home(request):
                         c.comment = comment
                         c.save()
 
+                    send_msg_to_relay(('[[report:%(id)d]] comment ',
+                                       'http://tools.wmflabs.org/cluebotng/report/%(id)d',
+                                       '* %(user)s * New Report' % {
+                                          'id': r.id,
+                                          'user': request.user.username,
+                                      }))
+
                     return redirect('/report/%d' % r.revertid.id)
 
     return render(request, 'cbng_report/home.html', {'form': form})
 
 
 def list(request):
-    reports_list = Reports.objects.all()
+    reports_list = Reports.objects.order_by('-timestamp').all()
     paginator = Paginator(reports_list, 50)
 
     page = request.GET.get('page')
@@ -97,6 +108,7 @@ def report(request, id):
         'vandalism': vandalism,
         'report': report,
         'comments': Comments.objects.filter(vandalism=vandalism).order_by('-timestamp'),
+        'form': form
     })
 
 
@@ -112,16 +124,37 @@ def report_status_change(request, revert_id, status_id):
     :return:
     '''
     try:
-        r = Reports.objects.get(vandalism=Vandalism.objects.get(id=revert_id))
+        v = Vandalism.objects.get(id=revert_id)
+        r = Reports.objects.get(vandalism=v)
         r.status = status_id
         r.save()
     except Exception as e:
         logger.error('Failed to save status %d on %d' %
                      (status_id, revert_id), e)
     else:
+
+        try:
+            comment = '%s has marked this report as "%s".' % (request.user.username,
+                                                              r.get_status_display())
+            Comments.objects.create(vandalism=v,
+                                    timestamp=datetime.now(),
+                                    user=request.user,
+                                    comment=comment)
+
+            send_msg_to_relay(('[[report:%(id)d]] comment ',
+                               'http://tools.wmflabs.org/cluebotng/report/%(id)d',
+                               '* %(user)s * %(comment)s' % {
+                                  'id': r.id,
+                                  'user': request.user.username,
+                                  'comment': comment
+                              }))
+        except Exception as e:
+            logger.error('Failed to save comment for change on %d' % revert_id, e)
+
         return HttpResponse(json.dumps({
             'status': 'OK',
-            'report_status': r.get_status_display()
+            'report_status': r.get_status_display(),
+            'next': get_next_report(request.user)
         }))
 
     return HttpResponse(json.dumps({'status': 'ERROR'}))

@@ -26,8 +26,8 @@ def map_user_rights(sender, user, request, **kwargs):
                 logger.error('Could not get reviwers group', e)
 
         if u.superadmin == 1:
-            user.admin = True
-            user.staff = True
+            user.is_admin = True
+            user.is_superuser = True
 
         user.email = u.email
         user.save()
