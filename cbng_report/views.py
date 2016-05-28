@@ -61,9 +61,9 @@ def home(request):
                     send_msg_to_relay(('[[report:%(id)d]] comment ',
                                        'http://tools.wmflabs.org/cluebotng/report/%(id)d',
                                        '* %(user)s * New Report' % {
-                                          'id': r.id,
-                                          'user': request.user.username,
-                                      }))
+                                           'id': r.id,
+                                           'user': request.user.username,
+                                       }))
 
                     return redirect('/report/%d' % r.revertid.id)
 
@@ -144,10 +144,10 @@ def report_status_change(request, revert_id, status_id):
             send_msg_to_relay(('[[report:%(id)d]] comment ',
                                'http://tools.wmflabs.org/cluebotng/report/%(id)d',
                                '* %(user)s * %(comment)s' % {
-                                  'id': r.id,
-                                  'user': request.user.username,
-                                  'comment': comment
-                              }))
+                                   'id': r.id,
+                                   'user': request.user.username,
+                                   'comment': comment
+                               }))
         except Exception as e:
             logger.error('Failed to save comment for change on %d' % revert_id, e)
 

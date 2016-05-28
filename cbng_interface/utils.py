@@ -6,6 +6,7 @@ from tastypie.models import ApiKey
 
 logger = logging.getLogger(__name__)
 
+
 def create_api_token(sender, user, request, **kwargs):
     try:
         ApiKey.objects.get(user=user)

@@ -6,6 +6,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def get_node(type):
     '''
     Returns the node for a cluster type

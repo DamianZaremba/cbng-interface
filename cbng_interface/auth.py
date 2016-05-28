@@ -31,11 +31,9 @@ class MediaWikiOAuth(BaseOAuth1):
             'last_name': '',
         }
 
-
     def user_data(self, access_token, *args, **kwargs):
         return self._get_user_token(access_token.get('oauth_token'),
                                     access_token.get('oauth_token_secret'))
-
 
     def _get_user_token(self, token, secret):
         (identity, authz_header) = self._get_identity(token, secret)
@@ -52,7 +50,6 @@ class MediaWikiOAuth(BaseOAuth1):
             raise Exception('Replay attack detected (%s != %s)' % (identity['nonce'], request_nonce))
 
         return identity
-
 
     def _get_identity(self, token, secret):
         # Request the JWT
