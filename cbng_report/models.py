@@ -98,9 +98,13 @@ class Vandalism(models.Model):
     def diff(self):
         if not self._diff:
             try:
-                r = requests.get(('https://en.wikipedia.org/w/index.php?'
-                                  'diffonly=1&action=render&diff=%d' % self.new_id),
-                                 timeout=5)
+                r = requests.get('https://en.wikipedia.org/w/index.php',
+                                 {
+                                     'diffonly': 1,
+                                     'action': 'render',
+                                     'diff': self.new_id
+                                 }, timeout=5)
+
                 if r.status_code == 200:
                     self._diff = r.text
             except Exception as e:
