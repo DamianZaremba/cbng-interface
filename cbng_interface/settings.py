@@ -58,8 +58,10 @@ MIDDLEWARE_CLASSES = [
 if DEBUG:
     DEBUG_TOOLBAR_PATCH_SETTINGS = False
     INTERNAL_IPS = ['127.0.0.1', '::1']
+    '''
     INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    '''
 else:
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
@@ -78,6 +80,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
+                'django.template.context_processors.debug',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cbng_interface.context_processors.staging_site',

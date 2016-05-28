@@ -89,16 +89,16 @@
         </div>
     </nav>
 {% endblock navbar %}
+{% if is_staging_site %}
+    <div id="header-note">
+        <p>This is the staging site for ClueBot NG's tools. Any changes made here are NOT live.</p>
+    </div>
+{% endif %}
 {% block app_pre_custom %}{% endblock %}
 <div class="container">
     <div class="row">{% bootstrap_messages %}</div>
 </div>
 {% block content %}{% endblock %}
-{% if is_staging_site %}
-<div id="footer-note">
-    <p>This is the staging site for ClueBot NG's tools. Any changes made here are NOT live.</p>
-</div>
-{% endif %}
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular.js/1.5.5/angular.min.js"></script>

@@ -6,6 +6,9 @@ from django.views.generic import RedirectView
 from django.views.static import serve
 from .views import (signup, profile)
 import nexus
+from django.contrib.auth.signals import user_logged_in
+from .utils import (create_api_token,
+                    map_user_rights)
 
 admin.autodiscover()
 nexus.autodiscover()
@@ -37,3 +40,9 @@ handler400 = 'cbng_interface.views.bad_request'  # noqa
 handler403 = 'cbng_interface.views.permission_denied'  # noqa
 handler404 = 'cbng_interface.views.four_oh_four'  # noqa
 handler500 = 'cbng_interface.views.five_hundred'  # noqa
+
+'''
+Fire signals
+'''
+user_logged_in.connect(create_api_token)
+user_logged_in.connect(map_user_rights)
