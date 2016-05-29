@@ -1,10 +1,9 @@
 import json
+import logging
 from datetime import datetime
 
 from cbng_report.forms import ReportForm, CommentForm
 from cbng_report.models import Vandalism, Report, Comment
-import logging
-
 from cbng_report.utils import send_msg_to_relay, get_next_report
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
@@ -35,8 +34,8 @@ def home(request):
                         r = Report.objects.get(vandalism=v)
                     except Report.DoesNotExist:
                         r = Report(vandalism=v,
-                                    timestamp=datetime.now,
-                                    status=0)
+                                   timestamp=datetime.now,
+                                   status=0)
 
                         if request.user.is_authenticated():
                             r.reporterid = request.user.id
@@ -143,9 +142,9 @@ def report_status_change(request, revert_id, status_id):
             comment = '%s has marked this report as "%s".' % (request.user.username,
                                                               r.get_status_display())
             Comment.objects.create(vandalism=v,
-                                    timestamp=datetime.now(),
-                                    user=request.user,
-                                    comment=comment)
+                                   timestamp=datetime.now(),
+                                   user=request.user,
+                                   comment=comment)
 
             send_msg_to_relay(('[[report:%(id)d]] comment ',
                                'http://tools.wmflabs.org/cluebotng/report/%(id)d',

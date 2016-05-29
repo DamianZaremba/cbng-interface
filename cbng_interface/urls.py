@@ -1,15 +1,15 @@
+import django.contrib.auth.views as auth_views
+import nexus
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.conf import settings
-import django.contrib.auth.views as auth_views
+from django.contrib.auth.signals import user_logged_in
 from django.views.generic import RedirectView
 from django.views.static import serve
-from .views import (signup, profile)
-import nexus
-from django.contrib.auth.signals import user_logged_in
 from .utils import (create_api_token,
                     map_user_rights,
                     map_preferences)
+from .views import (signup, profile)
 
 admin.autodiscover()
 nexus.autodiscover()
@@ -30,6 +30,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns.extend([
         url(r'^cluebotng/__debug__/', include(debug_toolbar.urls))
     ])

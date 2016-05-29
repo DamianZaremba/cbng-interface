@@ -1,7 +1,7 @@
-from cbng_interface.models import Preferences
-from cbng_report.models import User
 import logging
 
+from cbng_interface.models import Preferences
+from cbng_report.models import User
 from django.contrib.auth.models import Group
 from tastypie.models import ApiKey
 
@@ -49,8 +49,8 @@ def map_user_rights(sender, user, request, **kwargs):
             except Group.DoesNotExist, e:
                 logger.error('Could not get admins group', e)
 
-            #user.is_admin = True
-            #user.is_superuser = True
+                # user.is_admin = True
+                # user.is_superuser = True
 
         user.email = u.email
 

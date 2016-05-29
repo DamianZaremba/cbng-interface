@@ -3,7 +3,6 @@ from datetime import datetime
 from cbng_report.models import Report, Comment
 from cbng_review.models import EditGroup, Edit
 from django.core.management import BaseCommand
-from django.contrib.auth.models import Group, Permission
 
 
 class Command(BaseCommand):
@@ -24,17 +23,15 @@ class Command(BaseCommand):
         # Create edits for all the reports above
         for report in reports:
             print('Creating edit for report %d' % report.vandalism.id)
-            Edit.objects.create(
-                timestamp=datetime.now(),
-                user=report.vandalism.user,
-                article=report.vandalism.article,
-                old_id=report.vandalism.old_id,
-                new_id=report.vandalism.new_id,
-                group=eg,
-                report=report.vandalism.id,
-            )
+            Edit.objects.create(timestamp=datetime.now(),
+                                user=report.vandalism.user,
+                                article=report.vandalism.article,
+                                old_id=report.vandalism.old_id,
+                                new_id=report.vandalism.new_id,
+                                group=eg,
+                                report=report.vandalism.id)
 
             Comment.objects.create(vandalism=report.vandalism,
-                                    timestamp=datetime.now(),
-                                    user=None,
-                                    comment='Review started')
+                                   timestamp=datetime.now(),
+                                   user=None,
+                                   comment='Review started')

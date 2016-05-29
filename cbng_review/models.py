@@ -1,10 +1,11 @@
-import requests
-from cbng_report.models import Vandalism
-from django.db import models
 import logging
+
+import requests
 from django.contrib.auth.models import User
+from django.db import models
 
 logger = logging.getLogger(__name__)
+
 
 class EditGroup(models.Model):
     name = models.CharField(max_length=256)

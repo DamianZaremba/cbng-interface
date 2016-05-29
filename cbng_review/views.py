@@ -1,4 +1,5 @@
 import json
+import logging
 
 from cbng_review.forms import SignupForm
 from cbng_review.models import Classification, UserAccessRequest, Edit
@@ -9,14 +10,14 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-import logging
 
 logger = logging.getLogger(__name__)
 
+
 def stats(request):
     stats = {}
-    for stat in Classification.objects.all().values('user')\
-        .annotate(total=Count('user')).order_by('total'):
+    for stat in Classification.objects.all().values('user') \
+            .annotate(total=Count('user')).order_by('total'):
         stats[User.objects.get(id=stat['user']).username] = stat['total']
 
     data = {

@@ -1,11 +1,11 @@
 from urlparse import urlparse
 
-from social.backends.oauth import BaseOAuth1
+import jwt
+import re
 import requests
 import requests_oauthlib
 from django.conf import settings
-import jwt
-import re
+from social.backends.oauth import BaseOAuth1
 from social.exceptions import AuthFailed
 
 
@@ -53,14 +53,11 @@ class MediaWikiOAuth(BaseOAuth1):
 
     def _get_identity(self, token, secret):
         # Request the JWT
-        r = requests.get(
-            url=self.IDENTITY_URL,
-            auth=requests_oauthlib.OAuth1(
-                client_key=settings.SOCIAL_AUTH_MEDIAWIKI_KEY,
-                client_secret=settings.SOCIAL_AUTH_MEDIAWIKI_SECRET,
-                resource_owner_key=token,
-                resource_owner_secret=secret)
-        )
+        r = requests.get(url=self.IDENTITY_URL,
+                         auth=requests_oauthlib.OAuth1(client_key=settings.SOCIAL_AUTH_MEDIAWIKI_KEY,
+                                                       client_secret=settings.SOCIAL_AUTH_MEDIAWIKI_SECRET,
+                                                       resource_owner_key=token,
+                                                       resource_owner_secret=secret))
 
         # Decode the JWT
         try:

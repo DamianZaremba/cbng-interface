@@ -1,11 +1,10 @@
-from django.conf.urls import url, include
 import views
+from django.conf.urls import url, include
 from tastypie.api import Api
 from .api import (BeatenResource,
                   CommentResource,
                   ReportResource,
                   VandalismResource)
-
 
 v1_api = Api(api_name='v1')
 v1_api.register(BeatenResource())

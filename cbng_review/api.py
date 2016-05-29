@@ -5,18 +5,15 @@ from .models import (Edit,
 
 
 class EditResource(BaseModelResource):
-
     class Meta(BaseModelResource.BaseMeta):
         queryset = Edit.objects.all()
 
 
 class EditGroupResource(BaseModelResource):
-
     class Meta(BaseModelResource.BaseMeta):
         queryset = EditGroup.objects.all()
 
 
 class ClassificationResource(BaseModelResource):
-
     class Meta(BaseModelResource.BaseMeta):
         queryset = Classification.objects.all()

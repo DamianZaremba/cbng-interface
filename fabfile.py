@@ -1,9 +1,11 @@
 import subprocess
 import sys
+
+from fabric.api import env, sudo
+from fabric.contrib import files
+
 import os.path
 import requests
-from fabric.api import run, env, sudo
-from fabric.contrib import files
 
 LOGIN_HOST = 'tools-login.wmflabs.org'
 DEST_TOOL = 'cluebotng'
@@ -98,8 +100,8 @@ def _test_api():
 
 
 def deploy():
-    #_check_workingdir_clean()
-    #_check_remote_up2date()
+    # _check_workingdir_clean()
+    # _check_remote_up2date()
 
     stop()
     _update_code()

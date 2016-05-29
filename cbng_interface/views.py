@@ -1,9 +1,10 @@
+import logging
+
 from cbng_interface.forms import PreferencesForm
 from cbng_interface.models import Preferences
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-import logging
 from tastypie.models import ApiKey
 
 logger = logging.getLogger(__name__)

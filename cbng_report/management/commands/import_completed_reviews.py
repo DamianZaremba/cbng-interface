@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from cbng_report.models import Report, Comment
-from cbng_review.models import EditGroup, Edit
+from cbng_review.models import Edit
 from django.core.management import BaseCommand
 
 
@@ -19,6 +19,6 @@ class Command(BaseCommand):
             r.save()
 
             Comment.objects.create(vandalism__id=edit.report,
-                                    timestamp=datetime.now(),
-                                    user=None,
-                                    comment='Review completed')
+                                   timestamp=datetime.now(),
+                                   user=None,
+                                   comment='Review completed')

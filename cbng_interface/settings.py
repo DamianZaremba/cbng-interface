@@ -1,11 +1,11 @@
-import raven as raven
+import ConfigParser
+import random
+import string
+import sys
 
 import os
 import os.path
-import sys
-import random
-import string
-import ConfigParser
+import raven as raven
 
 # Base directories
 HOME_DIR = os.path.abspath(os.path.expanduser('~'))

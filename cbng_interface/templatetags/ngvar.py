@@ -2,6 +2,7 @@
 Function to return ng formatted variables ({{something}})
 '''
 from django import template
+
 register = template.Library()
 
 
