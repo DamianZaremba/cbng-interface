@@ -18,7 +18,7 @@ class Beaten(models.Model):
         db_table = 'beaten'
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     commentid = models.AutoField(primary_key=True)
     vandalism = models.OneToOneField('Vandalism',
                                      db_column='revertid',
@@ -34,13 +34,9 @@ class Comments(models.Model):
     class Meta:
         managed = False
         db_table = 'comments'
-        permissions = (
-            ('can_comment', 'Can comment on a report'),
-            ('can_review_comment', 'Can review a comment'),
-        )
 
 
-class Reports(models.Model):
+class Report(models.Model):
     STATUSES = (
         (0, 'Reported'),
         (1, 'Invalid'),
@@ -53,18 +49,14 @@ class Reports(models.Model):
                                      primary_key=True)
     timestamp = models.DateTimeField()
     user = models.ForeignKey(User, db_column='reporterid', null=True, blank=True)
-    status = models.IntegerField(choices=STATUSES)
+    status = models.IntegerField(choices=STATUSES, default=0)
 
     class Meta:
         managed = False
         db_table = 'reports'
 
-        permissions = (
-            ('can_review_report', 'Can review a report'),
-        )
 
-
-class Users(models.Model):
+class User(models.Model):
     '''
     Deprecated - used for mapping account privileges ONLY
     '''
@@ -88,7 +80,6 @@ class Vandalism(models.Model):
     heuristic = models.CharField(max_length=64)
     regex = models.CharField(max_length=2048, blank=True, null=True)
     reason = models.CharField(max_length=512)
-    diff = models.CharField(max_length=512)
     old_id = models.IntegerField()
     new_id = models.IntegerField()
     reverted = models.IntegerField()

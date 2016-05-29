@@ -1,7 +1,7 @@
 from cbng_interface.api import BaseModelResource
 from .models import (Beaten,
-                     Comments,
-                     Reports,
+                     Comment,
+                     Report,
                      Vandalism)
 
 
@@ -11,16 +11,16 @@ class BeatenResource(BaseModelResource):
         queryset = Beaten.objects.all()
 
 
-class CommentsResource(BaseModelResource):
+class CommentResource(BaseModelResource):
 
     class Meta(BaseModelResource.BaseMeta):
-        queryset = Comments.objects.all()
+        queryset = Comment.objects.all()
 
 
-class ReportsResource(BaseModelResource):
+class ReportResource(BaseModelResource):
 
     class Meta(BaseModelResource.BaseMeta):
-        queryset = Reports.objects.all()
+        queryset = Report.objects.all()
 
 
 class VandalismResource(BaseModelResource):

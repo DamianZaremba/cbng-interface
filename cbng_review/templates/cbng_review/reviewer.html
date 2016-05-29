@@ -1,8 +1,29 @@
 {% extends "cbng_review/base.html" %}
 {% load bootstrap3 %}
+{% load ngvar %}
+
+{% block app_pre_custom %}
+<link href="/cluebotng/static/css/diff.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block app_post_custom %}
+<script type="text/javascript">$scope.get_next()</script>
+{% endblock %}
 
 {% block content %}
 <div class="container" ng-controller="ReviewCtrl">
-
+    <div class="row review-links">
+        <p class="error" ng-show="error.length > 0">{% ngvar 'error' %}</p>
+        <p><input id="comments" placeholder="Optional Comment" /></p>
+        <p>
+            <a ng-click="score_edit(0)">Skip</a> |
+            <a ng-click="score_edit(1)">Vandalism</a> |
+            <a ng-click="score_edit(2)">Constructive</a>
+        </p>
+    </div>
+    <div class="row">
+        <h2>{% ngvar 'edit.article' %}</h2>
+        <div class="review-diff" ng-bind-html="edit.diff"></div>
+    </div>
 </div>
 {% endblock %}

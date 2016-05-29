@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 from cbng_report.forms import ReportForm, CommentForm
-from cbng_report.models import Vandalism, Reports, Comments
+from cbng_report.models import Vandalism, Report, Comment
 import logging
 
 from cbng_report.utils import send_msg_to_relay, get_next_report
@@ -16,8 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 def home(request):
-    form = ReportForm(request.POST)
     if request.method == 'POST':
+        form = ReportForm(request.POST)
         if form.is_valid():
             id = form.cleaned_data['id']
             comment = form.cleaned_data['comment']
@@ -32,9 +32,9 @@ def home(request):
                                          'Edit with revert ID %d was NOT reverted!' % id)
                 else:
                     try:
-                        r = Reports.objects.get(vandalism=v)
-                    except Reports.DoesNotExist:
-                        r = Reports(vandalism=v,
+                        r = Report.objects.get(vandalism=v)
+                    except Report.DoesNotExist:
+                        r = Report(vandalism=v,
                                     timestamp=datetime.now,
                                     status=0)
 
@@ -48,7 +48,7 @@ def home(request):
                         r.save()
 
                     if comment:
-                        c = Comments()
+                        c = Comment()
                         c.vandalism = v
                         c.timestamp = datetime.now
                         if request.user.is_authenticated():
@@ -67,11 +67,11 @@ def home(request):
 
                     return redirect('/report/%d' % r.revertid.id)
 
-    return render(request, 'cbng_report/home.html', {'form': form})
+    return render(request, 'cbng_report/home.html', {'form': ReportForm()})
 
 
 def list(request):
-    reports_list = Reports.objects.order_by('-timestamp').all()
+    reports_list = Report.objects.order_by('-timestamp').all()
     paginator = Paginator(reports_list, 50)
 
     page = request.GET.get('page')
@@ -86,17 +86,16 @@ def list(request):
 
 
 def report(request, id):
-    form = CommentForm(request.POST)
-
     vandalism = get_object_or_404(Vandalism, id=id)
     try:
-        report = Reports.objects.get(vandalism=vandalism)
-    except Reports.DoesNotExist:
+        report = Report.objects.get(vandalism=vandalism)
+    except Report.DoesNotExist:
         report = None
 
     if request.method == 'POST' and request.user.has_perm('cbng_report.can_comment'):
+        form = CommentForm(request.POST)
         if form.is_valid():
-            c = Comments()
+            c = Comment()
             c.vandalism = vandalism
             c.timestamp = datetime.now
             c.userid = request.user.id
@@ -107,8 +106,8 @@ def report(request, id):
     return render(request, 'cbng_report/report.html', {
         'vandalism': vandalism,
         'report': report,
-        'comments': Comments.objects.filter(vandalism=vandalism).order_by('-timestamp'),
-        'form': form
+        'comments': Comment.objects.filter(vandalism=vandalism).order_by('-timestamp'),
+        'form': CommentForm()
     })
 
 
@@ -123,10 +122,17 @@ def report_status_change(request, revert_id, status_id):
     :param status_id:
     :return:
     '''
+    valid_statues = [x[0] for x in Report.STATUSES]
+    if int(status_id) not in valid_statues:
+        logger.error('Invalid status %s requested for %s by %s' % (status_id,
+                                                                   revert_id,
+                                                                   request.user.username))
+        return HttpResponse(json.dumps({'status': 'ERROR'}))
+
     try:
         v = Vandalism.objects.get(id=revert_id)
-        r = Reports.objects.get(vandalism=v)
-        r.status = status_id
+        r = Report.objects.get(vandalism=v)
+        r.status = int(status_id)
         r.save()
     except Exception as e:
         logger.error('Failed to save status %d on %d' %
@@ -136,7 +142,7 @@ def report_status_change(request, revert_id, status_id):
         try:
             comment = '%s has marked this report as "%s".' % (request.user.username,
                                                               r.get_status_display())
-            Comments.objects.create(vandalism=v,
+            Comment.objects.create(vandalism=v,
                                     timestamp=datetime.now(),
                                     user=request.user,
                                     comment=comment)
@@ -149,7 +155,7 @@ def report_status_change(request, revert_id, status_id):
                                    'comment': comment
                                }))
         except Exception as e:
-            logger.error('Failed to save comment for change on %d' % revert_id, e)
+            logger.error('Failed to save comment for change on %s' % revert_id, e)
 
         return HttpResponse(json.dumps({
             'status': 'OK',

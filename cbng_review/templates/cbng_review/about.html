@@ -46,7 +46,7 @@
         classifying them as constructive could interfere with the bot's training, so they should be skipped.
         </p>
         <p>
-        In some cases, the interface may ask "Are you sure?" when you select a result.
+        In some cases, the interface may ask &quot;Are you sure?&quot; when you select a result.
         If this happens, double-check that your classification is correct, then click Yes or No.
         </p>
         <p>
@@ -56,20 +56,33 @@
         such as an edit that's clearly constructive but may look like vandalism based on simple statistics,
         leave a comment about it, and the Cluebot-NG operators will take that into account.
         </p>
-        <p style='font-size: 120%; color: #990000;'>
+        <p style='color: #990000;'>
         To be clear, if an edit is definitely vandalism, even if it's not easy-to-catch vandalism, still mark it as vandalism!
         The bot is capable of catching many things you may not think it can - do not baby the bot!
         If it's vandalism, mark it as such!
         </p>
         <p>
-        To get started, <a href='/cluebotng/review/reviewer'>click here</a>.
+        To get started, <a href='/cluebotng/review/reviewer/'>click here</a>.
         </p>
         {% else %}
             {% if user.is_authenticated %}
-            <p>
-            To be granted access to the interface, fill out the form below.
-            Once approved, please thoroughly review the instructions.
-            </p>
+                {% if access_requests == 0 %}
+                <p>
+                To be granted access to the interface, fill out the form below.
+                Once approved, please thoroughly review the instructions.
+                </p>
+                <p>
+                    <form action="/cluebotng/review/" method="post" class="form">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        {% buttons %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        {% endbuttons %}
+                    </form>
+                </p>
+                {% else %}
+                    <p>Your access request is pending</p>
+                {% endif %}
             {% else %}
             <p>
             To use the dataset review interface, you need to login with a Wikimedia account (see <a href="/cluebotng/signup">the signup page</a>).

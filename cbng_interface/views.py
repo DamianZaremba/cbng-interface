@@ -1,3 +1,6 @@
+from cbng_interface.forms import PreferencesForm
+from cbng_interface.models import Preferences
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import logging
@@ -28,8 +31,18 @@ def signup(request):
 
 @login_required
 def profile(request):
-    data = {}
+    prefs = Preferences.objects.get(user=request.user)
+    form = PreferencesForm()
+    form.next_on_review = prefs.next_on_review
 
+    if request.method == 'POST' and request.user.is_authenticated():
+        form = PreferencesForm(request.POST)
+        if form.is_valid():
+            prefs.next_on_review = form.cleaned_data['next_on_review']
+            prefs.save()
+            messages.add_message(request, messages.SUCCESS, 'Preferences updated')
+
+    data = {'form': form}
     try:
         data['api_key'] = ApiKey.objects.get(user=request.user).key
     except ApiKey.DoesNotExist:

@@ -117,14 +117,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-    },
-    'review': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 's52585__review',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-    },
+    }
 }
 DATABASE_ROUTERS = ['cbng_interface.db_router.AppRouter']
 
@@ -157,12 +150,6 @@ if os.path.isfile(CBNG_CFG_FILE):
         DATABASES['default']['PASSWORD'] = cfg.get('interface_mysql', 'password')
         DATABASES['default']['NAME'] = cfg.get('interface_mysql', 'name')
         DATABASES['default']['HOST'] = cfg.get('interface_mysql', 'host')
-
-    if cfg.has_section('review_mysql'):
-        DATABASES['review']['USER'] = cfg.get('review_mysql', 'user')
-        DATABASES['review']['PASSWORD'] = cfg.get('review_mysql', 'password')
-        DATABASES['review']['NAME'] = cfg.get('review_mysql', 'name')
-        DATABASES['review']['HOST'] = cfg.get('review_mysql', 'host')
 
     if cfg.has_section('bot_mysql'):
         DATABASES['bot']['USER'] = cfg.get('bot_mysql', 'user')

@@ -2,14 +2,14 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 import django.contrib.auth.views as auth_views
-from django.contrib.auth.models import User
 from django.views.generic import RedirectView
 from django.views.static import serve
 from .views import (signup, profile)
 import nexus
-from django.db import models
+from django.contrib.auth.signals import user_logged_in
 from .utils import (create_api_token,
-                    map_user_rights)
+                    map_user_rights,
+                    map_preferences)
 
 admin.autodiscover()
 nexus.autodiscover()
@@ -45,5 +45,6 @@ handler500 = 'cbng_interface.views.five_hundred'  # noqa
 '''
 Fire signals
 '''
-models.signals.post_save.connect(create_api_token, sender=User)
-models.signals.post_save.connect(map_user_rights, sender=User)
+user_logged_in.connect(create_api_token)
+user_logged_in.connect(map_user_rights)
+user_logged_in.connect(map_preferences)

@@ -15,7 +15,7 @@
         <p><b>Article</b>: {{ vandalism.article }}</p>
         <p><b>Diff</b>:</p>
         {% if vandalism.diff %}
-        <div class="change-diff">{{ vandalism.diff | safe }}</div>
+        <div ng-non-bindable class="change-diff">{{ vandalism.diff | safe }}</div>
         {% else %}
         <p>Could not load diff, this may be due to a tempoary error or the article may have been deleted</p>
         {% endif %}
@@ -34,7 +34,7 @@
         {% endspaceless %}</p>
         <p><b>Date</b>: {{ report.timestamp }}</p>
         <p class="status-changer"><b>Status</b>: <span id="status">{{ report.get_status_display }}</span>
-{% if user.is_authenticated and perms.cbng_report.can_review %}
+{% if user.is_authenticated and perms.cbng_report.change_reports %}
             ({% for status in report.STATUSES %}
                 <a ng-click="change_status({{ vandalism.id }}, {{ status|first }})">{{ status|last }}</a>
                 {% if status|first != report.STATUSES|last|first %}|{% endif %}
@@ -51,8 +51,8 @@
                 <p>
                     <a href="#comment-{{ comment.commentid }}">#{{ comment.commentid }}</a>
                     {{ comment.timestamp }}
-                    {% if user.is_authenticated and perms.cbng_report.can_review_comment %}
-                        <a ng-click="delete_comment({{ comment.commentid }})"> (X)</a>
+                    {% if user.is_authenticated and perms.cbng_report.delete_comments %}
+                        {# <a ng-click="delete_comment({{ comment.commentid }})"> (X)</a>#}
                     {% endif %}
                 </p>
                 {% if comment.user.firstname %}
@@ -72,7 +72,7 @@
     </div>
 {% endif %}
 
-{% if user.is_authenticated and perms.cbng_report.can_comment %}
+{% if user.is_authenticated and perms.cbng_report.add_comments %}
     <div class="row">
         <h1>Add a comment</h1>
         <p>
@@ -84,6 +84,14 @@
                 {% endbuttons %}
             </form>
         </p>
+    </div>
+{% else %}
+    <div class="row">
+        {% if user.is_authenticated %}
+        <p>Comments are not enabled</p>
+        {% else %}
+        <p>Please <a href='/cluebotng/login/'>login</a> to comment</p>
+        {% endif %}
     </div>
 {% endif %}
 </div>

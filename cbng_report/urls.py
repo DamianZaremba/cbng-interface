@@ -2,15 +2,15 @@ from django.conf.urls import url, include
 import views
 from tastypie.api import Api
 from .api import (BeatenResource,
-                  CommentsResource,
-                  ReportsResource,
+                  CommentResource,
+                  ReportResource,
                   VandalismResource)
 
 
 v1_api = Api(api_name='v1')
 v1_api.register(BeatenResource())
-v1_api.register(CommentsResource())
-v1_api.register(ReportsResource())
+v1_api.register(CommentResource())
+v1_api.register(ReportResource())
 v1_api.register(VandalismResource())
 
 urlpatterns = [

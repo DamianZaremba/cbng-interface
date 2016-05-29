@@ -1,6 +1,7 @@
-from random import random
+from random import randint
 
-from cbng_report.models import ClusterNode, Reports
+from cbng_interface.models import Preferences
+from cbng_report.models import ClusterNode, Report
 import socket
 import logging
 
@@ -44,9 +45,16 @@ def get_next_report(user):
     :return: (Integer) id or None
     '''
     try:
-        reports = Reports.objects.filter(status=0).order_by('-timestamp')[0:50]
-        r = random(0, len(reports))
-        return reports[r]
-    except Exception, e:
-        logger.exception('Failed to get the next report for user %d' % user.id, e)
+        p = Preferences.objects.get(user=user)
+    except Preferences.DoesNotExist, e:
+        logger.exception('Failed to get the preferences for user %s' % user.id, e)
+        p = None
+
+    if p is None or p.next_on_review:
+        try:
+            reports = Report.objects.filter(status=0).order_by('-timestamp')[0:100]
+            if len(reports) > 0:
+                return reports[randint(0, len(reports)-1)]
+        except Exception, e:
+            logger.exception('Failed to get the next report for user %s' % user.id, e)
     return None
