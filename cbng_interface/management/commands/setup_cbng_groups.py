@@ -7,15 +7,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         g, n = Group.objects.get_or_create(name='reporters')
-        g.permissions.add(Permission.objects.get(codename='add_comments'))
+        g.permissions.add(Permission.objects.get(codename='add_comment'))
         g.save()
 
         g, n = Group.objects.get_or_create(name='reviewers')
-        g.permissions.add(Permission.objects.get(codename='delete_comments'))
+        g.permissions.add(Permission.objects.get(codename='delete_comment'))
+        g.permissions.add(Permission.objects.get(codename='change_report'))
         g.permissions.add(Permission.objects.get(codename='can_review'))
-        g.permissions.add(Permission.objects.get(codename='change_reports'))
         g.save()
 
         g, n = Group.objects.get_or_create(name='admins')
-        #g.permissions.add(Permission.objects.get(codename='can_review_admin'))
+        g.permissions.add(Permission.objects.get(codename='can_review_admin'))
         g.save()

@@ -102,6 +102,12 @@ class Edit(models.Model):
 
         return self.CLASSIFICATION_UNKNOWN
 
+    class Meta:
+        permissions = (
+            ('can_review', 'Can review edits'),
+            ('can_review_admin', 'Can review edits'),
+        )
+
 
 class Classification(models.Model):
     CLASSIFICATIONS = (
