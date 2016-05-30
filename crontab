@@ -6,3 +6,6 @@
 
 # Associate reports/comments to known users once a day
 43 1 * * * /usr/bin/jsub -N cron-tools.cbng-sync-report-users -e /dev/null -o /dev/null -once -quiet /data/project/cluebotng/apps/cbng_interface/bin/ve_wrapper /data/project/cluebotng/apps/cbng_interface/manage.py sync_report_users &> /dev/null
+
+# This needs to end in a new line..
+
