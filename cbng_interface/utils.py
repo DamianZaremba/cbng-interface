@@ -49,7 +49,7 @@ def map_user_rights(sender, user, request, **kwargs):
             except Group.DoesNotExist, e:
                 logger.error('Could not get admins group', e)
 
-        if u.username in ['Rich', 'Cobi', 'Crispy']:
+        if u.username in ['RichSmith', 'Cobi', 'Crispy1989', 'DamianZaremba']:
             user.is_admin = True
             user.is_superuser = True
 
