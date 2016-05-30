@@ -35,6 +35,6 @@ def get_next_to_review(user):
                 .order_by('group__weight')[0:100]
 
     if len(edits) > 0:
-        return edits[randint(0, len(edits) - 1)]
+        return edits[randint(0, len(edits) - 1)].id
 
     return None

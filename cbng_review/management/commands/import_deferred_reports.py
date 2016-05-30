@@ -33,5 +33,4 @@ class Command(BaseCommand):
 
             Comment.objects.create(vandalism=report.vandalism,
                                    timestamp=datetime.now(),
-                                   user=None,
                                    comment='Review started')

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import logging
 
 import requests
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as DjangoUser
 from django.db import models
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,8 @@ class Comment(models.Model):
                                      db_column='revertid',
                                      primary_key=True)
     timestamp = models.DateTimeField()
-    user = models.ForeignKey(User, db_column='userid', null=True, blank=True)
+    user = models.ForeignKey(DjangoUser, db_column='userid', null=True, blank=True)
+    commenter = models.CharField(max_length=128, null=True, blank=True) # Deprecated
     comment = models.TextField()
 
     @property
@@ -50,7 +51,8 @@ class Report(models.Model):
                                      db_column='revertid',
                                      primary_key=True)
     timestamp = models.DateTimeField()
-    user = models.ForeignKey(User, db_column='reporterid', null=True, blank=True)
+    user = models.ForeignKey(DjangoUser, db_column='reporterid', null=True, blank=True)
+    reporter = models.CharField(max_length=128, null=True, blank=True) # Deprecated
     status = models.IntegerField(choices=STATUSES, default=0)
 
     class Meta:

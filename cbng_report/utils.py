@@ -54,7 +54,7 @@ def get_next_report(user):
         try:
             reports = Report.objects.filter(status=0).order_by('-timestamp')[0:100]
             if len(reports) > 0:
-                return reports[randint(0, len(reports) - 1)]
+                return reports[randint(0, len(reports) - 1)].vandalism__id
         except Exception, e:
             logger.exception('Failed to get the next report for user %s' % user.id, e)
     return None

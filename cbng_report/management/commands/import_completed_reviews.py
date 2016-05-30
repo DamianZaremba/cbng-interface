@@ -20,5 +20,4 @@ class Command(BaseCommand):
 
             Comment.objects.create(vandalism__id=edit.report,
                                    timestamp=datetime.now(),
-                                   user=None,
                                    comment='Review completed')

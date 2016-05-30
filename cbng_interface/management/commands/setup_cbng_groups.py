@@ -17,5 +17,5 @@ class Command(BaseCommand):
         g.save()
 
         g, n = Group.objects.get_or_create(name='admins')
-        g.permissions.add(Permission.objects.get(codename='can_review_admin'))
+        #g.permissions.add(Permission.objects.get(codename='can_review_admin'))
         g.save()
