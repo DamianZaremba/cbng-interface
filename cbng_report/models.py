@@ -27,7 +27,7 @@ class Comment(models.Model):
                                      primary_key=True)
     timestamp = models.DateTimeField()
     user = models.ForeignKey(DjangoUser, db_column='userid', null=True, blank=True)
-    commenter = models.CharField(max_length=128, null=True, blank=True) # Deprecated
+    commenter = models.CharField(max_length=128, null=True, blank=True)  # Deprecated
     comment = models.TextField()
 
     @property
@@ -52,7 +52,7 @@ class Report(models.Model):
                                      primary_key=True)
     timestamp = models.DateTimeField()
     user = models.ForeignKey(DjangoUser, db_column='reporterid', null=True, blank=True)
-    reporter = models.CharField(max_length=128, null=True, blank=True) # Deprecated
+    reporter = models.CharField(max_length=128, null=True, blank=True)  # Deprecated
     status = models.IntegerField(choices=STATUSES, default=0)
 
     class Meta:
