@@ -4,6 +4,7 @@ from cbng_interface.models import Preferences
 from cbng_report.models import User
 from django.contrib.auth.models import Group
 from tastypie.models import ApiKey
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,10 @@ def map_user_rights(sender, user, request, **kwargs):
     # Add existing privileged users to the reviewers group
     # and give them admin/superuser access if required
     try:
-        u = User.objects.get(username=user.username)
+        if user.username in settings.WIKIPEDIA_REPORT_USER_MAPPINGS.keys():
+            u = User.objects.get(username=settings.WIKIPEDIA_REPORT_USER_MAPPINGS[user.username])
+        else:
+            u = User.objects.get(username=user.username)
     except User.DoesNotExist:
         pass
     else:
