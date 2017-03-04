@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'bootstrap3',
     'tastypie',
-    'social.apps.django_app.default',
     'cbng_interface',
     'cbng_report',
     'cbng_backend'
