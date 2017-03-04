@@ -36,17 +36,14 @@
                                 <li>
                                     <a href="/cluebotng/report"><i class="fa fa-bug"></i> Report</a>
                                 </li>
-                                <li>
-                                    <a href="/cluebotng/review"><i class="fa fa-folder-o"></i> Review</a>
-                                </li>
-                                {% if user.is_authenticated and user.is_superuser %}
-                                <li>
-                                    <a href="/cluebotng/admin"><i class="fa fa-unlock"></i> Admin</a>
-                                </li>
-                                <li>
-                                    <a href="/cluebotng/nexus"><i class="fa fa-paw"></i> Feature Admin</a>
-                                </li>
-                                {% endif %}
+{#                                <li>#}
+{#                                    <a href="/cluebotng/review"><i class="fa fa-folder-o"></i> Review</a>#}
+{#                                </li>#}
+{#                                {% if user.is_superuser %}#}
+{#                                <li>#}
+{#                                    <a href="/cluebotng/admin"><i class="fa fa-unlock"></i> Admin</a>#}
+{#                                </li>#}
+{#                                {% endif %}#}
                             </ul>
                         </li>
                     </ul>
@@ -64,7 +61,7 @@
                         <li class="dropdown" uib-dropdown>
                             <a id="user-dropdown" href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" uib-dropdown-toggle>
                                 <i class="fa fa-user"></i>
-                                {{ user.first_name }}
+                                {{ user.username }}
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="user-dropdown">
@@ -106,10 +103,10 @@
 <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.js"></script>
 <script src="/cluebotng/static/js/app.js"></script>
 <script type="text/javascript">angular.module('cbngApp').constant('devMode', {% angular_debug %});</script>
-{% if not debug %}
-<script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/raven.js/3.0.4/raven.min.js"></script>
-<script type="text/javascript">Raven.config('https://245aa2bc5b434747bb3089f6c7fca780@app.getsentry.com/79344').install();</script>
-{% endif %}
+{#{% if not debug %}#}
+{#<script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/raven.js/3.0.4/raven.min.js"></script>#}
+{#<script type="text/javascript">Raven.config('https://245aa2bc5b434747bb3089f6c7fca780@app.getsentry.com/79344').install();</script>#}
+{#{% endif %}#}
 {% block app_post_custom %}{% endblock %}
 </body>
 </html>

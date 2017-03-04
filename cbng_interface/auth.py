@@ -12,7 +12,7 @@ from social.exceptions import AuthFailed
 class MediaWikiOAuth(BaseOAuth1):
     name = 'mediawiki'
     ID_KEY = 'username'
-    AUTHORIZATION_URL = r'https://en.wikipedia.org/wiki/Special:OAuth/authorize'
+    AUTHORIZATION_URL = r'https://en.wikipedia.org/w/index.php?title=Special%3AOAuth%2Fauthorize'
     REQUEST_TOKEN_URL = r'https://en.wikipedia.org/w/index.php?title=Special%3AOAuth%2Finitiate'
     ACCESS_TOKEN_URL = r'https://en.wikipedia.org/w/index.php?title=Special%3AOAuth%2Ftoken'
     IDENTITY_URL = r'https://en.wikipedia.org/w/index.php?title=Special%3AOAuth%2Fidentify'
@@ -25,7 +25,7 @@ class MediaWikiOAuth(BaseOAuth1):
 
         return {
             'username': response.get('username', ''),
-            'email': '',
+            'email': response.get('email', ''),
             'fullname': response.get('username', ''),
             'first_name': response.get('username', ''),
             'last_name': '',
@@ -42,12 +42,15 @@ class MediaWikiOAuth(BaseOAuth1):
         issuer = urlparse(identity['iss']).netloc
         expected_domain = urlparse(self.IDENTITY_URL).netloc
         if not issuer == expected_domain:
-            raise Exception('Unexpected issuer (%s != %s)' % (issuer, expected_domain))
+            raise Exception('Unexpected issuer (%s != %s)' %
+                            (issuer, expected_domain))
 
         # Verify that the response nonce matches the request nonce
-        request_nonce = re.search(r'oauth_nonce="(.*?)"', authz_header).group(1)
+        request_nonce = re.search(
+            r'oauth_nonce="(.*?)"', authz_header).group(1)
         if identity['nonce'] != request_nonce:
-            raise Exception('Replay attack detected (%s != %s)' % (identity['nonce'], request_nonce))
+            raise Exception('Replay attack detected (%s != %s)' %
+                            (identity['nonce'], request_nonce))
 
         return identity
 
@@ -66,6 +69,7 @@ class MediaWikiOAuth(BaseOAuth1):
                                   algorithms=["HS256"],
                                   leeway=10.0)
         except jwt.InvalidTokenError as e:
-            raise Exception('An error occurred while trying to read identity', e)
+            raise Exception(
+                'An error occurred while trying to read identity', e)
 
         return (identity, r.request.headers['Authorization'])

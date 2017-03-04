@@ -11,11 +11,11 @@
         <h1>Revert {{ vandalism.id }}</h1>
     </div>
     <div class="row">
-        <p><b>User</b>: {{ vandalism.user }}</p>
-        <p><b>Article</b>: {{ vandalism.article }}</p>
-        <p><b>Diff</b>:</p>
+        <p><b>User</b>: <a href="https://en.wikipedia.org/wiki/User:{{ vandalism.user | urlencode }}">{{ vandalism.user }}</a></p>
+        <p><b>Article</b>: <a href="https://en.wikipedia.org/wiki/{{ vandalism.article | urlencode }}">{{ vandalism.article }}</a></p>
+        <p><b>Diff</b> (<a href="{{ vandalism.diff }}">{{ vandalism.diff }}</a>):</p>
         {% if vandalism.diff %}
-        <div ng-non-bindable class="change-diff">{{ vandalism.diff | safe }}</div>
+        <div ng-non-bindable class="change-diff">{{ vandalism.get_diff | safe }}</div>
         {% else %}
         <p>Could not load diff, this may be due to a tempoary error or the article may have been deleted</p>
         {% endif %}
@@ -47,16 +47,16 @@
         <h2>Comments</h2>
         {% if comments %}
             {% for comment in comments %}
-            <div class="row comment" id="comment-{{ comment.commentid }}">
+            <div class="row comment" id="comment-{{ comment.id }}">
                 <p>
-                    <a href="#comment-{{ comment.commentid }}">#{{ comment.commentid }}</a>
+                    <a href="#comment-{{ comment.id }}">#{{ comment.id }}</a>
                     {{ comment.timestamp }}
-                    {% if user.is_authenticated and perms.cbng_report.delete_comments %}
+                    {% if perms.cbng_report.delete_comments %}
                         {# <a ng-click="delete_comment({{ comment.commentid }})"> (X)</a>#}
                     {% endif %}
                 </p>
-                {% if comment.user.firstname %}
-                <b>{{ comment.user.firstname }}</b>
+                {% if comment.user.username %}
+                <b>{{ comment.user.username }}</b>
                 {% else %}
                 <b>Anonymous</b>
                 {% endif %}
@@ -76,7 +76,7 @@
     <div class="row">
         <h1>Add a comment</h1>
         <p>
-            <form action="/cluebotng/report/{{ report.id }}/" method="post" class="form">
+            <form action="/cluebotng/report/{{ vandalism.id }}/" method="post" class="form">
                 {% csrf_token %}
                 {% bootstrap_form form %}
                 {% buttons %}

@@ -31,14 +31,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    'axes',
-    'gargoyle',
-    'nexus',
     'bootstrap3',
     'tastypie',
     'cbng_interface',
-    'cbng_review',
     'cbng_report',
+    'cbng_backend'
 ]
 
 # Middleware
@@ -50,18 +47,16 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'axes.middleware.FailedLoginMiddleware'
+    'django.middleware.security.SecurityMiddleware'
 ]
 
 # Add toolbar in debug mode
 if DEBUG:
     DEBUG_TOOLBAR_PATCH_SETTINGS = False
     INTERNAL_IPS = ['127.0.0.1', '::1']
-    '''
     INSTALLED_APPS.append('debug_toolbar')
-    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
-    '''
+    MIDDLEWARE_CLASSES.append(
+        'debug_toolbar.middleware.DebugToolbarMiddleware')
 else:
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
@@ -69,7 +64,6 @@ else:
 ROOT_URLCONF = 'cbng_interface.urls'
 STATIC_ROOT = os.path.join(BASE_DIR, 'cbng_interface', 'static')
 STATIC_URL = '/cluebotng/static/'
-NEXUS_MEDIA_PREFIX = '/cluebotng/nexus/media/'
 
 # Templates
 TEMPLATES = [
@@ -106,20 +100,12 @@ WSGI_APPLICATION = 'cbng_interface.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 's52585__interface',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-    },
-    'bot': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 's52585__cb',
+        'NAME': 'cbng_bot',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
     }
 }
-DATABASE_ROUTERS = ['cbng_interface.db_router.AppRouter']
 
 # Localisation
 LANGUAGE_CODE = 'en-gb'
@@ -137,7 +123,7 @@ RAVEN_CONFIG = {
 }
 
 # Slightly dodgy hack
-STAGING_SITE = (os.environ.get('USER', '') == 'tools.cluebotng')
+STAGING_SITE = (os.environ.get('USER', '') == 'tools.cluebotng-staging')
 
 # Load config file
 CBNG_CFG_FILE = os.path.join(HOME_DIR, '.cbng.cnf')
@@ -145,17 +131,11 @@ if os.path.isfile(CBNG_CFG_FILE):
     cfg = ConfigParser.RawConfigParser()
     cfg.read(CBNG_CFG_FILE)
 
-    if cfg.has_section('interface_mysql'):
-        DATABASES['default']['USER'] = cfg.get('interface_mysql', 'user')
-        DATABASES['default']['PASSWORD'] = cfg.get('interface_mysql', 'password')
-        DATABASES['default']['NAME'] = cfg.get('interface_mysql', 'name')
-        DATABASES['default']['HOST'] = cfg.get('interface_mysql', 'host')
-
-    if cfg.has_section('bot_mysql'):
-        DATABASES['bot']['USER'] = cfg.get('bot_mysql', 'user')
-        DATABASES['bot']['PASSWORD'] = cfg.get('bot_mysql', 'password')
-        DATABASES['bot']['NAME'] = cfg.get('bot_mysql', 'name')
-        DATABASES['bot']['HOST'] = cfg.get('bot_mysql', 'host')
+    if cfg.has_section('mysql'):
+        DATABASES['default']['USER'] = cfg.get('mysql', 'user')
+        DATABASES['default']['PASSWORD'] = cfg.get('mysql', 'password')
+        DATABASES['default']['NAME'] = cfg.get('mysql', 'name')
+        DATABASES['default']['HOST'] = cfg.get('mysql', 'host')
 
     if cfg.has_section('general'):
         SECRET_KEY = cfg.get('general', 'session_secret')
@@ -173,6 +153,9 @@ SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 190
 SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 190
 SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 190
 SOCIAL_AUTH_EMAIL_LENGTH = 190
+SOCIAL_AUTH_REQUEST_TOKEN_EXTRA_ARGUMENTS = {
+    'oauth_callback': 'oob'
+}
 
 # User mappings
 WIKIPEDIA_REPORT_USER_MAPPINGS = {

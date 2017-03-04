@@ -17,20 +17,28 @@
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" readonly value="{{ user.username }}">
             </div>
-            <!--
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input type="text" class="form-control" id="first_name" readonly value="{{ user.first_name }}">
-            </div>
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input type="text" class="form-control" id="last_name" readonly value="{{ user.last_name }}">
-            </div>
-            -->
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" readonly value="{{ user.email }}">
-            </div>
+{#            <div class="form-group">#}
+{#                <label for="first_name">First Name</label>#}
+{#                <input type="text" class="form-control" id="first_name" readonly value="{{ user.first_name }}">#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <label for="last_name">Last Name</label>#}
+{#                <input type="text" class="form-control" id="last_name" readonly value="{{ user.last_name }}">#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <label for="email">Email</label>#}
+{#                <input type="email" class="form-control" id="email" readonly value="{{ user.email }}">#}
+{#            </div>#}
+            <h3>Preferences</h3>
+            <p>
+                <form action="/cluebotng/profile/" method="post" class="form">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    {% endbuttons %}
+                </form>
+            </p>
         </div>
 
         <div class="col-md-6">
@@ -65,18 +73,11 @@
             <div class="form-group" ng-modal="api-key" ng-show="show_api_details">
                 <label for="api_key">API Key (secret)</label>
                 <input type="text" class="form-control" id="api_key" value="{{ api_key }}">
-            </div>
-
-            <h3>Preferences</h3>
-            <p>
-                <form action="/cluebotng/profile/" method="post" class="form">
+                <p><form action="/cluebotng/profile/generate_api_key" method="post" class="form">
                     {% csrf_token %}
-                    {% bootstrap_form form %}
-                    {% buttons %}
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    {% endbuttons %}
-                </form>
-            </p>
+                    <button type="submit" class="btn btn-danger">Regenerate</button>
+                </form></p>
+            </div>
         </div>
 
         <div class="col-md-6">

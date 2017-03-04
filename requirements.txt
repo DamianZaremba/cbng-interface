@@ -18,6 +18,4 @@ django-axes
 python-social-auth
 ConfigParser
 django-bootstrap3
-gargoyle-yplan
-nexus-yplan
 raven

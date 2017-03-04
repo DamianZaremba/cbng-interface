@@ -8,15 +8,13 @@ import os.path
 import requests
 
 LOGIN_HOST = 'tools-login.wmflabs.org'
-DEST_TOOL = 'cluebotng'
-TOOL_DIR = os.path.join('/data/project/', DEST_TOOL)
-DEST_DIR = os.path.join(TOOL_DIR, 'apps/cbng_interface')
+TOOL_DIR = None
+DEST_DIR = None
 REPO_URL = 'https://github.com/DamianZaremba/cbng-interface.git'
 
 # Internal settings
 env.hosts = [LOGIN_HOST]
 env.use_ssh_config = True
-env.sudo_user = 'tools.%s' % DEST_TOOL
 env.sudo_prefix = "/usr/bin/sudo -ni"
 
 
@@ -49,7 +47,7 @@ def _check_remote_up2date():
         sys.exit(1)
 
 
-def setup():
+def _setup():
     PARENT_DEST_DIR = os.path.dirname(DEST_DIR)
     if not files.exists(PARENT_DEST_DIR):
         sudo('mkdir -p "%(dir)s"' % {'dir': PARENT_DEST_DIR})
@@ -99,12 +97,33 @@ def _test_api():
         sys.exit(2)
 
 
-def deploy():
-    # _check_workingdir_clean()
-    # _check_remote_up2date()
+def _deploy():
+    global TOOL_DIR, DEST_DIR
+    assert TOOL_DIR is not None
+    assert DEST_DIR is not None
+
+    _setup()
+    #_check_workingdir_clean()
+    _check_remote_up2date()
 
     stop()
     _update_code()
     _migrate()
     start()
     _test_api()
+
+
+def deploy():
+    global TOOL_DIR, DEST_DIR
+    TOOL_DIR = '/data/project/cluebotng-staging/'
+    DEST_DIR = '/data/project/cluebotng-staging/apps/cbng_interface'
+    env.sudo_user = 'tools.cluebotng-staging'
+    _deploy()
+
+
+def deploy_production():
+    global TOOL_DIR, DEST_DIR
+    TOOL_DIR = '/data/project/cluebotng/'
+    DEST_DIR = '/data/project/cluebotng/apps/cbng_interface'
+    env.sudo_user = 'tools.cluebotng'
+    _deploy()

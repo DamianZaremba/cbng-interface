@@ -8,4 +8,5 @@ class ReportForm(forms.Form):
 
 
 class CommentForm(forms.Form):
-    comment = forms.IntegerField(label='Comment')
+    comment = forms.CharField(label='Comment', required=True,
+                              help_text='Leaving a comment is completely optional.')

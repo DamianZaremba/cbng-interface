@@ -1,10 +1,4 @@
-[interface_mysql]
-user = root
-name = s52585__interface
-password =
-host = localhost
-
-[bot_mysql]
+[mysql]
 user = root
 name = s52585__cb
 password =

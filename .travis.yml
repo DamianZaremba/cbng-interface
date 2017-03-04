@@ -4,13 +4,14 @@ services:
   - mysql
   - redis-server
 python:
-  - "2.7"
+  - "3.4"
 env:
   matrix:
     - DB=mysql
 before_script:
-  - mysql -e 'create database s52585__interface;'
+  - mysql -e 'create database cbng_bot;'
+  - mysql -e 'source fixtures/cb_sample_data.sql' cbng_bot
 script:
-  - ./manage.py migrate
   - ./setup.py flake8
+  - ./manage.py migrate
   - ./setup.py nosetests

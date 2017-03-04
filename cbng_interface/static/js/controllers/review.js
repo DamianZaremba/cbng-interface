@@ -7,12 +7,16 @@
             $('#comments').val('');
             $http.get('/cluebotng/review/japi/next/')
                 .then(function(response) {
-                        $scope.edit = {
-                            'id': response.data.id,
-                            'diff': $sce.trustAsHtml(response.data.diff),
-                            'article': response.data.article,
-                            'force': false
-                        };
+                        if(response.data.status == 'OK') {
+                            $scope.edit = {
+                                'id': response.data.id,
+                                'diff': $sce.trustAsHtml(response.data.diff),
+                                'article': response.data.article,
+                                'force': false
+                            };
+                        } else {
+                            $scope.error = response.data.error;
+                        }
                     }, function(response) {
                         $scope.error = 'API error: ' + response.status;
                     }
@@ -43,6 +47,8 @@
                     });
             }
         };
+
+        $scope.get_next();
     };
     reviewCtrl.$inject = ['$scope', '$rootScope', '$http', '$sce'];
 

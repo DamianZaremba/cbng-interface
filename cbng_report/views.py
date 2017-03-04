@@ -4,7 +4,8 @@ from datetime import datetime
 
 from cbng_report.forms import ReportForm, CommentForm
 from cbng_report.models import Vandalism, Report, Comment
-from cbng_report.utils import send_msg_to_relay, get_next_report
+from cbng_report.utils import get_next_report
+from cbng_backend.utils import send_msg_to_relay
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -94,12 +95,10 @@ def report(request, id):
     if request.method == 'POST' and request.user.has_perm('cbng_report.can_comment'):
         form = CommentForm(request.POST)
         if form.is_valid():
-            c = Comment()
-            c.vandalism = vandalism
-            c.timestamp = datetime.now
-            c.userid = request.user.id
-            c.comment = form.cleaned_data['comment']
-            c.save()
+            Comment.objects.create(vandalism=vandalism,
+                                   user=request.user,
+                                   timestamp=datetime.utcnow(),
+                                   comment=form.cleaned_data['comment'].encode('utf-8'))
             messages.add_message(request, messages.SUCCESS, 'Added comment')
 
     return render(request, 'cbng_report/report.html', {
@@ -154,7 +153,8 @@ def report_status_change(request, revert_id, status_id):
                                    'comment': comment
                                }))
         except Exception as e:
-            logger.error('Failed to save comment for change on %s' % revert_id, e)
+            logger.error(
+                'Failed to save comment for change on %s' % revert_id, e)
 
         return HttpResponse(json.dumps({
             'status': 'OK',
