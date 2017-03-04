@@ -135,7 +135,7 @@ if os.path.isfile(CBNG_CFG_FILE):
         DATABASES['default']['USER'] = cfg.get('mysql', 'user')
         DATABASES['default']['PASSWORD'] = cfg.get('mysql', 'password')
         DATABASES['default']['NAME'] = cfg.get('mysql', 'name')
-        DATABASES['bot']['HOST'] = cfg.get('mysql', 'host')
+        DATABASES['default']['HOST'] = cfg.get('mysql', 'host')
 
     if cfg.has_section('general'):
         SECRET_KEY = cfg.get('general', 'session_secret')
