@@ -103,7 +103,7 @@ def _deploy():
     assert DEST_DIR is not None
 
     _setup()
-    #_check_workingdir_clean()
+    _check_workingdir_clean()
     _check_remote_up2date()
 
     stop()
@@ -112,16 +112,7 @@ def _deploy():
     start()
     _test_api()
 
-
 def deploy():
-    global TOOL_DIR, DEST_DIR
-    TOOL_DIR = '/data/project/cluebotng-staging/'
-    DEST_DIR = '/data/project/cluebotng-staging/apps/cbng_interface'
-    env.sudo_user = 'tools.cluebotng-staging'
-    _deploy()
-
-
-def deploy_production():
     global TOOL_DIR, DEST_DIR
     TOOL_DIR = '/data/project/cluebotng/'
     DEST_DIR = '/data/project/cluebotng/apps/cbng_interface'
