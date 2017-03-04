@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'bootstrap3',
     'tastypie',
+    'social.apps.django_app.default',
     'cbng_interface',
     'cbng_report',
     'cbng_backend'
@@ -55,8 +56,7 @@ if DEBUG:
     DEBUG_TOOLBAR_PATCH_SETTINGS = False
     INTERNAL_IPS = ['127.0.0.1', '::1']
     INSTALLED_APPS.append('debug_toolbar')
-    MIDDLEWARE_CLASSES.append(
-        'debug_toolbar.middleware.DebugToolbarMiddleware')
+    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 else:
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
@@ -135,7 +135,7 @@ if os.path.isfile(CBNG_CFG_FILE):
         DATABASES['default']['USER'] = cfg.get('mysql', 'user')
         DATABASES['default']['PASSWORD'] = cfg.get('mysql', 'password')
         DATABASES['default']['NAME'] = cfg.get('mysql', 'name')
-        DATABASES['default']['HOST'] = cfg.get('mysql', 'host')
+        DATABASES['bot']['HOST'] = cfg.get('mysql', 'host')
 
     if cfg.has_section('general'):
         SECRET_KEY = cfg.get('general', 'session_secret')

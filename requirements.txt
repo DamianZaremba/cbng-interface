@@ -13,6 +13,7 @@ django-tastypie-swagger
 django-debug-toolbar
 django-recaptcha
 django-paging
+social-auth-app-django
 requests
 django-axes
 python-social-auth
